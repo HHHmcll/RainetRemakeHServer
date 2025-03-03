@@ -139,7 +139,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\Entry.cpp" />
+    <ClCompile Include="CommandActionManager.cpp" />
+    <ClCompile Include="Entry.cpp" />
+    <ClCompile Include="LineBoost.cpp" />
+    <ClCompile Include="RSData_Map.cpp" />
+    <ClCompile Include="RS_IOManager.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="RS_CommandActionManager.h" />
+    <ClInclude Include="LineBoost.h" />
+    <ClInclude Include="Enums.h" />
+    <ClInclude Include="RSData_Command.h" />
+    <ClInclude Include="RSData_Map.h" />
+    <ClInclude Include="RS_IOManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

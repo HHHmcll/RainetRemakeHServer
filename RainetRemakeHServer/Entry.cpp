@@ -1,22 +1,13 @@
-class RSData_Command {
 
-};
+#include "RS_IOManager.h"
+#include "RSData_Command.h"
+#include "RSData_Map.h"
 
-class RS_CommandParser{
-
-};
-
-class RSData_Map {
-
-};
 
 class RS_CommandProcesser {
 
 };
 
-class RS_IOManager {
-
-};
 
 class RS_GameLogManager {
 
@@ -38,8 +29,9 @@ public:
 		// Get Ready to Tick
 	}
 	static bool Tick() {
-		string rawCommand = RS_IOManager::ReadCommand();
-		RSData_Command command = RS_CommandParser::ParseCommand(rawCommand);
+		RSData_Command command;
+		RS_IOManager::FetchCommand(command);
+
 		RS_CommandProcesser::ProcessCommand(command, Get()._mapData);
 		
 		RS_GameLogManager::LogCommand();

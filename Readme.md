@@ -36,8 +36,9 @@
 | MV | 移动棋子 |
 | AR | 美术指令 |
 | ER | 回复专用，指令拒绝 |
+
 ## 输入
-4 char + 2char + extra + \n
+5 char + alpha + \n
 
 玩家ID + 指令头 + meta + newline
 
