@@ -2,11 +2,8 @@
 #include "RS_IOManager.h"
 #include "RSData_Command.h"
 #include "RSData_Map.h"
+#include "RS_CommandProcesser.h"
 
-
-class RS_CommandProcesser {
-
-};
 
 
 class RS_GameLogManager {
@@ -31,8 +28,8 @@ public:
 	static bool Tick() {
 		RSData_Command command;
 		RS_IOManager::FetchCommand(command);
-
-		RS_CommandProcesser::ProcessCommand(command, Get()._mapData);
+		std::vector<uint8_t> outputBuffer = std::vector<uint8_t>();
+		RS_CommandProcesser::ProcessCommand(command, Get()._mapData, outputBuffer);
 		
 		RS_GameLogManager::LogCommand();
 		RS_IOManager::WriteResponse(command);

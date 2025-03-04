@@ -21,7 +21,7 @@ struct RSData_Player
 };
 
 
-class RSData_Map
+struct RSData_Map
 {
 private:
 
