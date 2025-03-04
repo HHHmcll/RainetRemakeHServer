@@ -1,6 +1,6 @@
 #pragma once
 
-enum class EPlayerType : unsigned char {
+enum class EPlayerType : uint8_t {
 	Player1,
 	Player2,
 	Viewer,
@@ -8,7 +8,7 @@ enum class EPlayerType : unsigned char {
 	Empty
 };
 
-enum class EPawnType : unsigned char
+enum class EPawnType : uint8_t
 {
 	Link,
 	Virus,
@@ -16,7 +16,7 @@ enum class EPawnType : unsigned char
 	Null
 };
 
-enum class EActionType : unsigned char {
+enum class EActionType : uint8_t {
 	BoardDisplay = 0,
 	AddPlayer,
 

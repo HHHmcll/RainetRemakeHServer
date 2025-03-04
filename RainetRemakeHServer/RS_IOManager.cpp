@@ -4,7 +4,7 @@
 
 void RS_IOManager::FetchCommand(RSData_Command& command)
 {
-    unsigned char* data = (unsigned char*)&command;
+    uint8_t* data = (uint8_t*)&command;
 
     data[0] = std::cin.get();
     data[1] = std::cin.get();
@@ -18,10 +18,10 @@ void RS_IOManager::FetchCommand(RSData_Command& command)
 
         break;
     case EActionType::InitializePieces:
-    case EActionType::InitializeTerminal:
         command.col1 = std::cin.get();
 
         break;
+    case EActionType::InitializeTerminal:
     case EActionType::Move:
     case EActionType::LineBoost:
     case EActionType::FireWall:

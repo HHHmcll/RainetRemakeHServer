@@ -6,7 +6,7 @@ RSData_Map::RSData_Map()
 	board(64,nullptr)
 {
 
-	const static int player1Coord[8] = {
+	const static constexpr int player1Coord[8] = {
 		CoordToID(0,0),
 		CoordToID(0,1),
 		CoordToID(0,2),
@@ -16,7 +16,7 @@ RSData_Map::RSData_Map()
 		CoordToID(0,6),
 		CoordToID(0,7),
 	};
-	const static int player2Coord[8] = {
+	const static constexpr int player2Coord[8] = {
 		CoordToID(7,0),
 		CoordToID(7,1),
 		CoordToID(7,2),
