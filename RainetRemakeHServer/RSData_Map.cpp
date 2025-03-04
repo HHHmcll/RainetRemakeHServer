@@ -46,3 +46,10 @@ RSData_Player* RSData_Map::getPlayer(bool isPlayer1)
 {
 	return &playerData[!isPlayer1] ;
 }
+const EGameState RSData_Map::GetGameState() const{
+	return gameState;
+}
+
+void RSData_Map::SetGameState(EGameState newState){
+	gameState = newState;
+}

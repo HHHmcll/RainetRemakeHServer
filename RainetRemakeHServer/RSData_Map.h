@@ -30,14 +30,15 @@ private:
     // pieces
     std::vector<RSData_Piece> pieces;
 
-
+    EGameState gameState;
     static constexpr inline int CoordToID(uint8_t row, uint8_t col)  {
         return row * MAP_SIZE + col;
     }
 public:
 
     RSData_Map();
-
+    const EGameState GetGameState() const;
+    void SetGameState(EGameState newState);
     RSData_Piece* getPiece(uint8_t row, uint8_t col);
     RSData_Player* getPlayer(bool isPlayer1);
 };

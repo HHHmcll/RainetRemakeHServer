@@ -15,7 +15,7 @@ bool CA_LineBoost::Do(RSData_Command& command, RSData_Map& map, std::vector<uint
 	return false;
 }
 
-bool CA_LineBoost::Usable()
+bool CA_LineBoost::Block(RSData_Command& command, RSData_Map& map)
 {
 	return false;
 }

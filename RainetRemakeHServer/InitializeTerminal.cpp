@@ -3,10 +3,12 @@
 
 void CA_InitializeTerminal::Initialize(EPlayerType owner, void* meta)
 {
+	
 }
 
 bool CA_InitializeTerminal::CanDo(RSData_Command& command, RSData_Map& map)
 {
+
 	return false;
 }
 
@@ -15,7 +17,7 @@ bool CA_InitializeTerminal::Do(RSData_Command& command, RSData_Map& map, std::ve
 	return false;
 }
 
-bool CA_InitializeTerminal::Usable()
+bool CA_InitializeTerminal::Block(RSData_Command& command, RSData_Map& map)
 {
 	return false;
 }

@@ -36,3 +36,10 @@ enum class EActionType : uint8_t {
 	ErrorRequirements,
 	Num
 };
+
+enum class EGameState : uint8_t{
+	Initialization,
+	WaitingPlayer1,
+	WaitingPlayer2,
+	End
+};
