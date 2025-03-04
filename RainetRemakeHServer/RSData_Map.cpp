@@ -3,7 +3,8 @@
 
 RSData_Map::RSData_Map()
 	:playerData(),
-	board(64,nullptr)
+	board(64,nullptr),
+	gameState(EGameState::Initialization)
 {
 
 	const static constexpr int player1Coord[8] = {
