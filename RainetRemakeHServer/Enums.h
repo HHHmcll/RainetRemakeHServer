@@ -1,6 +1,6 @@
 #pragma once
 
-enum class EPlayerType : uint8_t {
+enum EPlayerType : uint8_t {
 	Player1,
 	Player2,
 	Viewer,
@@ -8,7 +8,7 @@ enum class EPlayerType : uint8_t {
 	Empty
 };
 
-enum class EPawnType : uint8_t
+enum EPawnType : uint8_t
 {
 	Link,
 	Virus,
@@ -16,7 +16,7 @@ enum class EPawnType : uint8_t
 	Null
 };
 
-enum class EActionType : uint8_t {
+enum EActionType : uint8_t {
 	BoardDisplay = 0,
 	AddPlayer,
 
@@ -37,7 +37,8 @@ enum class EActionType : uint8_t {
 	Num
 };
 
-enum class EGameState : uint8_t{
+
+enum EGameState : uint8_t{
 	Initialization,
 	WaitingPlayer1,
 	WaitingPlayer2,

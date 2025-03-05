@@ -11,16 +11,20 @@ class RS_GameLogManager {
 };
 
 class RS_GameInstance {
-	RSData_Map _mapData;
+	RSData_Map* _mapData;
 
 private:
-	RS_GameInstance();
+	RS_GameInstance(){}
+	~RS_GameInstance(){
+		delete _mapData;
+	}
 	static RS_GameInstance& Get() {
 		static RS_GameInstance instance = RS_GameInstance();
 		return instance;
 	}
 public:
 	static void Init(char** Args) {
+		Get()._mapData = new RSData_Map(4);
 		// Parse Args
 		// Create new Map
 		// Get Ready to Tick
@@ -29,15 +33,17 @@ public:
 		RSData_Command command;
 		RS_IOManager::FetchCommand(command);
 		std::vector<uint8_t> outputBuffer = std::vector<uint8_t>();
-		RS_CommandProcesser::ProcessCommand(command, Get()._mapData, outputBuffer);
+		RS_CommandProcesser::ProcessCommand(command, *Get()._mapData, outputBuffer);
 		
-		RS_GameLogManager::LogCommand();
-		RS_IOManager::WriteResponse(command);
+		//RS_GameLogManager::LogCommand();
+		//RS_IOManager::WriteResponse(command);
 
 	}
 	static void Exit() {
-		RS_GameLogManager::Save();
+
+		//RS_GameLogManager::Save();
 		// Cleanup
+		
 	}
 };
 int main(char** Args) {

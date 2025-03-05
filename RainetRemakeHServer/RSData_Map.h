@@ -20,10 +20,6 @@ struct RSData_Player
     uint8_t VirusAte, VirusEnter;
     std::map<EActionType, RS_CommandAction*> Cards;
     RSData_Piece pieces[8];
-
-    static constexpr inline int CoordToID(uint8_t row, uint8_t col)  {
-        return row * MAP_SIZE + col;
-    }
     
     RSData_Player(uint8_t playerID):
     PlayerID(playerID),LinkAte(0),LinkEnter(0),VirusAte(0),VirusEnter(0),
@@ -42,16 +38,16 @@ private:
     RSData_Player playerData[2];
     std::vector<RSData_Piece*> board;
     // pieces
-
+    const uint8_t MaxTerminals;
     EGameState gameState;
     static constexpr inline int CoordToID(uint8_t row, uint8_t col)  {
         return row * MAP_SIZE + col;
     }
 public:
 
-    RSData_Map();
-    const EGameState GetGameState() const;
-    void SetGameState(EGameState newState);
-    RSData_Piece* getPiece(uint8_t row, uint8_t col);
-    RSData_Player* getPlayer(bool isPlayer1);
+    RSData_Map(uint8_t maxTerminals);
+    inline const EGameState GetGameState() const;
+    inline void SetGameState(EGameState newState);
+    inline RSData_Piece* getPiece(uint8_t row, uint8_t col);
+    inline RSData_Player& getPlayer(bool isPlayer1);
 };

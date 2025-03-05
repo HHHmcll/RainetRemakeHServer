@@ -1,10 +1,11 @@
 #include "RSData_Map.h"
 
 
-RSData_Map::RSData_Map()
+RSData_Map::RSData_Map(uint8_t maxTerminals)
 	:playerData{RSData_Player(0),RSData_Player(1)},
 	board(64,nullptr),
-	gameState(EGameState::Initialization)
+	gameState(EGameState::Initialization),
+	MaxTerminals(maxTerminals)
 {
 
 	const static constexpr int player1Coord[8] = {
@@ -40,14 +41,14 @@ RSData_Piece* RSData_Map::getPiece(uint8_t row, uint8_t col)
 	return board[CoordToID(row,col)];
 }
 
-RSData_Player* RSData_Map::getPlayer(bool isPlayer1)
+inline RSData_Player& RSData_Map::getPlayer(bool isPlayer1)
 {
-	return &playerData[!isPlayer1] ;
+	return playerData[!isPlayer1] ;
 }
-const EGameState RSData_Map::GetGameState() const{
+inline const EGameState RSData_Map::GetGameState() const{
 	return gameState;
 }
 
-void RSData_Map::SetGameState(EGameState newState){
+inline void RSData_Map::SetGameState(EGameState newState){
 	gameState = newState;
 }

@@ -18,10 +18,11 @@ void RS_IOManager::FetchCommand(RSData_Command& command)
 
         break;
     case EActionType::InitializePieces:
-        command.col1 = std::cin.get();
+        command.data.PieceSetup.data = std::cin.get();
 
         break;
     case EActionType::InitializeTerminal:
+        break;;
     case EActionType::Move:
     case EActionType::LineBoost:
     case EActionType::FireWall:
@@ -31,11 +32,11 @@ void RS_IOManager::FetchCommand(RSData_Command& command)
     case EActionType::ZeroDayAttack:
     case EActionType::SandBox:
 
-        command.col1 = std::cin.get();
-        command.row1 = std::cin.get();
+        command.data.Coordinate.col1 = std::cin.get();
+        command.data.Coordinate.row1 = std::cin.get();
 
-        command.col2 = std::cin.get();
-        command.row2 = std::cin.get();
+        command.data.Coordinate.col2 = std::cin.get();
+        command.data.Coordinate.row2 = std::cin.get();
         break;
     default:
 
