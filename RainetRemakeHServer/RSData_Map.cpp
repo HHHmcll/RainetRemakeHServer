@@ -1,7 +1,7 @@
 #include "RSData_Map.h"
 
 
-RSData_Map::RSData_Map(uint8_t maxTerminals)
+RSData_Map::RSData_Map(uint32_t maxTerminals)
 	:playerData{RSData_Player(0),RSData_Player(1)},
 	board(64,nullptr),
 	gameState(EGameState::Initialization),

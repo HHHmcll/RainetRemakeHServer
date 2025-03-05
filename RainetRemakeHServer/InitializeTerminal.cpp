@@ -2,8 +2,11 @@
 #include "Enums.h"
 #include "RSData_Map.h"
 #include "RSData_Command.h"
-void CA_InitializeTerminal::Initialize(EPlayerType owner, void* meta)
-{}
+#include <vector>
+std::shared_ptr<RS_CommandAction> CA_InitializeTerminal::CreateNewObject(void* meta)
+{
+	return std::shared_ptr<RS_CommandAction>(nullptr);
+}
 
 bool CA_InitializeTerminal::CanDo(RSData_Command& command, RSData_Map& map)
 {
@@ -13,6 +16,16 @@ bool CA_InitializeTerminal::CanDo(RSData_Command& command, RSData_Map& map)
 	if (command.Player != command.Player & 0x01){
 		return false;
 	}
+	if (command.Data.TerminalSetup != map.MaxTerminals){
+		return false;
+	}
+	std::vector<EActionType>* terminals = (std::vector<EActionType>*)command.Meta.get();
+	for(EActionType terminal : *terminals){
+		if(terminal > EActionType::Num  || terminal < EActionType::Move){
+			return false;
+		}
+	}
+	
 	return  true;
 	
 }
@@ -21,10 +34,6 @@ bool CA_InitializeTerminal::Do(RSData_Command& command, RSData_Map& map, std::ve
 {
 	RSData_Player player = map.getPlayer(command.Player == EPlayerType::Player1);
 
-	for (auto & piece : player.pieces)
-	{
-		//piece.Type = command.data.
-	}
 	
 	
 	return true;
@@ -39,5 +48,8 @@ RS_CommandAction* CreateInitializeTerminal() {
 	static CA_InitializeTerminal instance = CA_InitializeTerminal();
 	return &instance;
 }
+
+
+
 
 RS_CommandActionCreateFunction createInitializeTerminalFunction = RS_CommandActionCreateFunction(EActionType::LineBoost, &CreateInitializeTerminal);

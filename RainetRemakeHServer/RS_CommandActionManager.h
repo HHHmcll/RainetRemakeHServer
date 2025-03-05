@@ -1,14 +1,15 @@
 #pragma once
 #include "Enums.h"
 #include <vector>
+#include <memory>
 struct RSData_Map;
 struct RSData_Command;
+struct RSData_Player;
 
 class RS_CommandAction {
 public:
-	// Initialization code, will be called after constructor and before being used.
-	// Please put raw data initialization in constructor and avoid logic here until no other choices;
-	virtual void Initialize(EPlayerType owner, void* meta) = 0;
+	// Create a object of self
+	virtual std::shared_ptr<RS_CommandAction> CreateNewObject(void* meta) = 0;
 	// Called directly before Do. Will not call Do if returned false;
 	// Note that this will be called from CreateAction()
 	// NOT THE INSTANCE STORED IN RSData_Map
@@ -21,20 +22,22 @@ public:
 	// Will not process command if return false
 	// Will be called from the instance stored in RSData_Map
 	virtual bool Block(RSData_Command& command, RSData_Map& map) = 0;
+	
 };
 
 typedef RS_CommandAction* (*CreateActionFunction)(void) ;
 
 class RS_CommandActionManager{
-	static CreateActionFunction AllActions[unsigned long long (EActionType::Num)];
+	
+	static CreateActionFunction AllStaticActions[unsigned long long (EActionType::Num)];
 	friend class RS_CommandActionCreateFunction;
 public:
-	static RS_CommandAction* CreateAction(EActionType actionType);
+	static RS_CommandAction* GetStaticAction(EActionType actionType);
 };
 
 
 
 class RS_CommandActionCreateFunction {
 public:
-	RS_CommandActionCreateFunction(EActionType actionType, CreateActionFunction creationFunction);
+	RS_CommandActionCreateFunction(EActionType actionType, CreateActionFunction getStaticFunction);
 };

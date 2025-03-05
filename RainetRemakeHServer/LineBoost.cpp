@@ -1,7 +1,7 @@
 #include "LineBoost.h"
 #include "Enums.h"
 
-void CA_LineBoost::Initialize(EPlayerType owner, void* meta)
+std::shared_ptr<RS_CommandAction> CA_LineBoost::CreateNewObject(void* meta)
 {
 }
 
@@ -20,8 +20,10 @@ bool CA_LineBoost::Block(RSData_Command& command, RSData_Map& map)
 	return false;
 }
 
-RS_CommandAction* CreateLineBoost() {
-	return new CA_LineBoost();
+
+RS_CommandAction* GetStaticLineBoost() {
+	static CA_LineBoost LineBoostStatic = CA_LineBoost();
+	return &LineBoostStatic;
 }
 
-RS_CommandActionCreateFunction createLineBoostFunction = RS_CommandActionCreateFunction(EActionType::LineBoost, &CreateLineBoost);
+RS_CommandActionCreateFunction createLineBoostFunction = RS_CommandActionCreateFunction(EActionType::LineBoost, &GetStaticLineBoost);

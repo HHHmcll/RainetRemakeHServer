@@ -12,12 +12,7 @@ struct RSData_Command {
 			uint8_t col1, row1;
 			uint8_t col2, row2;
 		} Coordinate;
-		struct 
-		{
-			uint8_t num;
-			uint8_t buffer1;
-			uint16_t buffer2;
-		}TerminalSetup;
+		uint32_t TerminalSetup;
 		struct 
 		{
 			uint8_t setup;
@@ -25,6 +20,14 @@ struct RSData_Command {
 			uint8_t meta2;
 			uint8_t meta3;
 		}PieceSetup;
+		struct
+		{
+			uint8_t byte1;
+			uint8_t byte2;
+			uint8_t byte3;
+			uint8_t byte4;
+		}Raw;
+		
 	} Data;
 	
 	std::shared_ptr<void> Meta;

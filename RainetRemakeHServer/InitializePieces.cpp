@@ -2,8 +2,11 @@
 #include "Enums.h"
 #include "RSData_Map.h"
 #include "RSData_Command.h"
-void CA_InitializePieces::Initialize(EPlayerType owner, void* meta)
-{}
+
+std::shared_ptr<RS_CommandAction> CA_InitializePieces::CreateNewObject(void* meta) 
+{
+	
+}
 
 bool CA_InitializePieces::CanDo(RSData_Command& command, RSData_Map& map)
 {
@@ -33,9 +36,9 @@ bool CA_InitializePieces::Block(RSData_Command& command, RSData_Map& map)
 	return false;
 }
 
-RS_CommandAction* CreateInitializePieces() {
+RS_CommandAction* GetStaticInitializePieces() {
 	static CA_InitializePieces instance = CA_InitializePieces();
 	return &instance;
 }
 
-RS_CommandActionCreateFunction createInitializePieceFunction = RS_CommandActionCreateFunction(EActionType::LineBoost, &CreateInitializePieces);
+RS_CommandActionCreateFunction createInitializePieceFunction = RS_CommandActionCreateFunction(EActionType::LineBoost, &GetStaticInitializePieces);

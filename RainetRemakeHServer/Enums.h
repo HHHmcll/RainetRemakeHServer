@@ -17,13 +17,15 @@ enum EPieceType : uint8_t
 };
 
 enum EActionType : uint8_t {
-	BoardDisplay = 0,
-	AddPlayer,
-
+	BoardDisplay = uint8_t(0),
+	
 	InitializeTerminal,
 	InitializePieces,
+	VisualEffet,
+	Error,
 
 	Move,
+	
 	LineBoost,
 	FireWall,
 	VirusCheck,
@@ -32,8 +34,6 @@ enum EActionType : uint8_t {
 	ZeroDayAttack,
 	SandBox,
 
-	VisualEffet,
-	Error,
 	Num
 };
 
