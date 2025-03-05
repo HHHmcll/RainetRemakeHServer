@@ -20,10 +20,16 @@ bool CA_InitializeTerminal::CanDo(RSData_Command& command, RSData_Map& map)
 		return false;
 	}
 	std::vector<EActionType>* terminals = (std::vector<EActionType>*)command.Meta.get();
+	bool Took[EActionType::Num - EActionType::Move - 1] = {0};
 	for(EActionType terminal : *terminals){
-		if(terminal > EActionType::Num  || terminal < EActionType::Move){
+		if(terminal >= EActionType::Num  || terminal <= EActionType::Move){
 			return false;
 		}
+		int terminalID = terminal - EActionType::Move - 1;
+		if(Took[terminalID]){
+			return false;
+		}
+		Took[terminalID] = true;
 	}
 	
 	return  true;
@@ -33,8 +39,11 @@ bool CA_InitializeTerminal::CanDo(RSData_Command& command, RSData_Map& map)
 bool CA_InitializeTerminal::Do(RSData_Command& command, RSData_Map& map, std::vector<uint8_t>& outputBuffer)
 {
 	RSData_Player player = map.getPlayer(command.Player == EPlayerType::Player1);
-
-	
+	player.Cards.clear();
+	std::vector<EActionType>* terminals = (std::vector<EActionType>*)command.Meta.get();
+	for(EActionType terminal : *terminals){
+		player.Cards[terminal] = RS_CommandActionManager::GetStaticAction(terminal)->CreateNewObject(nullptr);
+	}
 	
 	return true;
 }

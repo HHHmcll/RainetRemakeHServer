@@ -17,7 +17,7 @@ enum EPieceType : uint8_t
 };
 
 enum EActionType : uint8_t {
-	BoardDisplay = uint8_t(0),
+	BoardDisplay,
 	
 	InitializeTerminal,
 	InitializePieces,
