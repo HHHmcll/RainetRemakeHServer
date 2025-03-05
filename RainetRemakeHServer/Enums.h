@@ -17,6 +17,7 @@ enum EPieceType : uint8_t
 };
 
 enum EActionType : uint8_t {
+	GetOutput,
 	BoardDisplay,
 	
 	InitializeTerminal,

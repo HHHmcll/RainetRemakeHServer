@@ -48,11 +48,7 @@ enum EActionType
 
 ## 输出
 
+每当一个 EActionType::GetOutput被调用时，一个二进制数据包会被写入stdout
 
-EPlayerType + Meta
-
-### BD
-- 每个棋子4 char，共4 * 8 * 8 char
-- 表示方法后述
-  
-  
+第一位为 EPlayerType
+数据需要完整（包括第一位）发送给对应Type的客户端
