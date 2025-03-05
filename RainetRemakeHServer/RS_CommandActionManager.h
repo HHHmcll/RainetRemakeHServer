@@ -17,7 +17,7 @@ public:
 	// Called if CanDo is true
 	// Note that this will be called from CreateAction()
 	// NOT THE INSTANCE STORED IN RSData_Map
-	virtual bool Do(RSData_Command& command, RSData_Map& map, std::vector<uint8_t>& outputBuffer) = 0;
+	virtual bool Do(RSData_Command& command, RSData_Map& map) = 0;
 	// Return if CommandAction stored in command should be blocked based on ***this***
 	// Will not process command if return false
 	// Will be called from the instance stored in RSData_Map

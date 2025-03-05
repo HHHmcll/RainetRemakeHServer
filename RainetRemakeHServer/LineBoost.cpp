@@ -10,7 +10,7 @@ bool CA_LineBoost::CanDo(RSData_Command& command, RSData_Map& map)
 	return false;
 }
 
-bool CA_LineBoost::Do(RSData_Command& command, RSData_Map& map, std::vector<uint8_t>& outputBuffer)
+bool CA_LineBoost::Do(RSData_Command& command, RSData_Map& map)
 {
 	return false;
 }

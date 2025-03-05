@@ -48,7 +48,8 @@ enum EActionType
 
 ## 输出
 
-玩家ID + 指令头 + Meta
+
+EPlayerType + Meta
 
 ### BD
 - 每个棋子4 char，共4 * 8 * 8 char

@@ -23,7 +23,7 @@ bool CA_InitializePieces::CanDo(RSData_Command& command, RSData_Map& map)
 	
 }
 
-bool CA_InitializePieces::Do(RSData_Command& command, RSData_Map& map, std::vector<uint8_t>& outputBuffer)
+bool CA_InitializePieces::Do(RSData_Command& command, RSData_Map& map)
 {
 	RSData_Player player = map.getPlayer(command.Player == EPlayerType::Player1);
 

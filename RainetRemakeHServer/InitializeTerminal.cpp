@@ -39,7 +39,7 @@ bool CA_InitializeTerminal::CanDo(RSData_Command& command, RSData_Map& map)
 	
 }
 
-bool CA_InitializeTerminal::Do(RSData_Command& command, RSData_Map& map, std::vector<uint8_t>& outputBuffer)
+bool CA_InitializeTerminal::Do(RSData_Command& command, RSData_Map& map)
 {
 	RSData_Player player = map.getPlayer(command.Player);
 	player.Cards.clear();
