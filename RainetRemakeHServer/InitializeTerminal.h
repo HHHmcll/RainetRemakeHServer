@@ -3,7 +3,8 @@
 
 class CA_InitializeTerminal :public RS_CommandAction {
 private:
-CA_InitializeTerminal();
+	bool Initialized[2] = {0};
+	CA_InitializeTerminal();
 	friend RS_CommandAction* CreateInitializeTerminal();
 public:
 	std::shared_ptr<RS_CommandAction> CreateNewObject(void* meta) override;

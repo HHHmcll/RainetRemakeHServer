@@ -38,19 +38,22 @@ bool CA_InitializeTerminal::CanDo(RSData_Command& command, RSData_Map& map)
 
 bool CA_InitializeTerminal::Do(RSData_Command& command, RSData_Map& map, std::vector<uint8_t>& outputBuffer)
 {
-	RSData_Player player = map.getPlayer(command.Player == EPlayerType::Player1);
+	RSData_Player player = map.getPlayer(command.Player);
 	player.Cards.clear();
 	std::vector<EActionType>* terminals = (std::vector<EActionType>*)command.Meta.get();
 	for(EActionType terminal : *terminals){
 		player.Cards[terminal] = RS_CommandActionManager::GetStaticAction(terminal)->CreateNewObject(nullptr);
 	}
-	
+
+	outputBuffer.push_back(command.ActionType);
+	outputBuffer.push_back(1);
+
 	return true;
 }
 
 bool CA_InitializeTerminal::Block(RSData_Command& command, RSData_Map& map)
 {
-	return false;
+	return Initialized[0] && Initialized[1];
 }
 
 RS_CommandAction* CreateInitializeTerminal() {

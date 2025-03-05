@@ -5,10 +5,9 @@
 
 void RS_IOManager::FetchCommand(RSData_Command& command)
 {
-    uint8_t* Data = (uint8_t*)&command;
-
-    Data[0] = std::cin.get();
-    Data[1] = std::cin.get();
+    
+    command.Player = EPlayerType (std::cin.get());
+    command.ActionType = EActionType(std::cin.get());
 
     switch (command.ActionType) {
     case EActionType::BoardDisplay:

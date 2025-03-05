@@ -8,4 +8,6 @@ bool RS_CommandProcesser::ProcessCommand(RSData_Command& command, RSData_Map& ma
     if(action->CanDo(command,map)){
         return action->Do(command,map,output);
     }
+    output.push_back(EActionType::Error);
+    return false;
 }

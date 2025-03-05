@@ -5,7 +5,7 @@
 
 std::shared_ptr<RS_CommandAction> CA_InitializePieces::CreateNewObject(void* meta) 
 {
-	
+	return std::shared_ptr<RS_CommandAction>(nullptr);
 }
 
 bool CA_InitializePieces::CanDo(RSData_Command& command, RSData_Map& map)
@@ -14,6 +14,9 @@ bool CA_InitializePieces::CanDo(RSData_Command& command, RSData_Map& map)
 		return false;
 	}
 	if (command.Player != command.Player & 0x01){
+		return false;
+	}
+	if (Initialized[command.Player]){
 		return false;
 	}
 	return  true;
@@ -28,12 +31,14 @@ bool CA_InitializePieces::Do(RSData_Command& command, RSData_Map& map, std::vect
 	{
 		player.pieces[i].Type = EPieceType(command.Data.PieceSetup.setup & 1 << i);
 	}
+	Initialized[command.Player] = true;
+	if(Block(command,map))
 	return true;
 }
 
 bool CA_InitializePieces::Block(RSData_Command& command, RSData_Map& map)
 {
-	return false;
+	return Initialized[0] && Initialized[1];
 }
 
 RS_CommandAction* GetStaticInitializePieces() {

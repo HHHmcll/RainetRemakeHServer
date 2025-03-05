@@ -3,8 +3,8 @@
 #include <memory>
 struct RSData_Command {
 
-	EActionType ActionType;
 	EPlayerType Player;
+	EActionType ActionType;
 	union 
 	{
 		struct

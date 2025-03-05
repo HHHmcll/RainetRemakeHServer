@@ -21,6 +21,7 @@ enum EActionType : uint8_t {
 	
 	InitializeTerminal,
 	InitializePieces,
+	Start,
 	VisualEffet,
 	Error,
 

@@ -22,42 +22,29 @@
 
 ## 创建
 
-## 指令头
 
-- 2 char
+## 指令
 
-| 指令 | 效果 |
- ---- | ---- 
-| BD | 获取棋盘 |
-| IT | 初始化终端 |
-| IP | 初始化棋子 |
-| TE | 终端卡使用 |
-| MV | 移动棋子 |
-| AR | 美术指令 |
-| ER | 回复专用，指令拒绝 |
+玩家ID (1 char) + 指令头 (1 char) + 必备数据 (4 char) + （可选数据）
 
-## 输入
-5 char + alpha + \n
+### 指令头
 
-玩家ID + 指令头 + meta + newline
+- 1 char
+enum EActionType
 
-- #### BD
-  - 无meta
+### 其他
+
+- #### 无meta
   - 
-- #### IT
-  - 1 char 使用的终端数n
-  - n char 选择使用的终端
+- #### 长数据
+  - 1 uint32 (4 char) 可选数据长度 n
+  - n char 数据
 
-- #### IP
-  - 由该玩家视角从左到右的棋子排列，8char
+- #### InitializePiece
+  - 由该玩家视角从左到右的棋子排列，1char
 
-- #### TE
-  - 1 char 使用的终端
-  - 4 char x1，y1，x2，y2
-- #### MV
-  - 4 char x1，y1，x2，y2
-- #### AR
-  - 所有Meta完整回送
+- #### 必备数据
+  - 
 
 ## 输出
 
