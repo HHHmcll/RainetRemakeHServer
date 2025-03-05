@@ -10,13 +10,13 @@ std::shared_ptr<RS_CommandAction> CA_InitializePieces::CreateNewObject(void* met
 
 bool CA_InitializePieces::CanDo(RSData_Command& command, RSData_Map& map)
 {
+	if (Initialized[command.Player]){
+		return false;
+	}
 	if (map.GetGameState() != EGameState::Initialization){
 		return false;
 	}
 	if (command.Player != command.Player & 0x01){
-		return false;
-	}
-	if (Initialized[command.Player]){
 		return false;
 	}
 	return  true;
@@ -32,7 +32,11 @@ bool CA_InitializePieces::Do(RSData_Command& command, RSData_Map& map, std::vect
 		player.pieces[i].Type = EPieceType(command.Data.PieceSetup.setup & 1 << i);
 	}
 	Initialized[command.Player] = true;
-	if(Block(command,map))
+
+	if(Block(command,map) || RS_CommandActionManager::GetStaticAction(EActionType::InitializeTerminal)->Block(command,map)){
+ 		// not yet initialized
+	}
+
 	return true;
 }
 

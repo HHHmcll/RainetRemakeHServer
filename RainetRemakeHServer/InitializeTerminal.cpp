@@ -10,6 +10,9 @@ std::shared_ptr<RS_CommandAction> CA_InitializeTerminal::CreateNewObject(void* m
 
 bool CA_InitializeTerminal::CanDo(RSData_Command& command, RSData_Map& map)
 {
+	if (Initialized[command.Player]){
+		return false;
+	}
 	if (map.GetGameState() != EGameState::Initialization){
 		return false;
 	}
@@ -45,9 +48,10 @@ bool CA_InitializeTerminal::Do(RSData_Command& command, RSData_Map& map, std::ve
 		player.Cards[terminal] = RS_CommandActionManager::GetStaticAction(terminal)->CreateNewObject(nullptr);
 	}
 
-	outputBuffer.push_back(command.ActionType);
-	outputBuffer.push_back(1);
-
+	if(Block(command,map) || RS_CommandActionManager::GetStaticAction(EActionType::InitializeTerminal)->Block(command,map)){
+		// not yet initialized
+   	}
+   
 	return true;
 }
 
@@ -60,8 +64,5 @@ RS_CommandAction* CreateInitializeTerminal() {
 	static CA_InitializeTerminal instance = CA_InitializeTerminal();
 	return &instance;
 }
-
-
-
 
 RS_CommandActionCreateFunction createInitializeTerminalFunction = RS_CommandActionCreateFunction(EActionType::LineBoost, &CreateInitializeTerminal);
