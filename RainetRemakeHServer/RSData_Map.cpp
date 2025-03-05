@@ -2,7 +2,7 @@
 
 
 RSData_Map::RSData_Map()
-	:playerData(),
+	:playerData{RSData_Player(0),RSData_Player(1)},
 	board(64,nullptr),
 	gameState(EGameState::Initialization)
 {
@@ -27,12 +27,9 @@ RSData_Map::RSData_Map()
 		CoordToID(7,6),
 		CoordToID(7,7),
 	};
-
 	for (int i = 0; i < MAP_SIZE; i++) {
-		pieces.push_back(RSData_Piece(EPlayerType::Player1,EPawnType::Unknown));
-		board[player1Coord[i]] = &pieces[i * 2];
-		pieces.push_back(RSData_Piece(EPlayerType::Player2, EPawnType::Unknown));
-		board[player2Coord[i]] = &pieces[i * 2 + 1];
+		board[player1Coord[i]] = &playerData[0].pieces[i];
+		board[player2Coord[i]] = &playerData[1].pieces[i];
 	}
 }
 
