@@ -7,8 +7,8 @@
 struct RSData_Piece
 {
     RSData_Player* Player;
-    EPawnType Type;
-    RSData_Piece(RSData_Player* player, EPawnType type):Player(player), Type(type){}
+    EPieceType Type;
+    RSData_Piece(RSData_Player* player, EPieceType type):Player(player), Type(type){}
 };
 
 class RS_CommandAction;
@@ -19,14 +19,14 @@ struct RSData_Player
     uint8_t LinkAte, LinkEnter;
     uint8_t VirusAte, VirusEnter;
     std::map<EActionType, RS_CommandAction*> Cards;
-    RSData_Piece pieces[8];
+    RSData_Piece pieces[MAP_SIZE];
     
     RSData_Player(uint8_t playerID):
     PlayerID(playerID),LinkAte(0),LinkEnter(0),VirusAte(0),VirusEnter(0),
-    pieces{RSData_Piece(this,EPawnType::Unknown), RSData_Piece(this,EPawnType::Unknown),
-        RSData_Piece(this,EPawnType::Unknown), RSData_Piece(this,EPawnType::Unknown),
-        RSData_Piece(this,EPawnType::Unknown), RSData_Piece(this,EPawnType::Unknown),
-        RSData_Piece(this,EPawnType::Unknown), RSData_Piece(this,EPawnType::Unknown)}
+    pieces{RSData_Piece(this,EPieceType::Unknown), RSData_Piece(this,EPieceType::Unknown),
+        RSData_Piece(this,EPieceType::Unknown), RSData_Piece(this,EPieceType::Unknown),
+        RSData_Piece(this,EPieceType::Unknown), RSData_Piece(this,EPieceType::Unknown),
+        RSData_Piece(this,EPieceType::Unknown), RSData_Piece(this,EPieceType::Unknown)}
     {}
 };
 

@@ -8,7 +8,7 @@ enum EPlayerType : uint8_t {
 	Empty
 };
 
-enum EPawnType : uint8_t
+enum EPieceType : uint8_t
 {
 	Link,
 	Virus,
@@ -32,8 +32,8 @@ enum EActionType : uint8_t {
 	ZeroDayAttack,
 	SandBox,
 
-	ArtRequirements,
-	ErrorRequirements,
+	VisualEffet,
+	Error,
 	Num
 };
 

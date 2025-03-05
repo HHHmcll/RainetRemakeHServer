@@ -3,8 +3,8 @@
 #include <memory>
 struct RSData_Command {
 
-	EActionType terminalType;
-	EPlayerType player;
+	EActionType ActionType;
+	EPlayerType Player;
 	union 
 	{
 		struct
@@ -25,8 +25,10 @@ struct RSData_Command {
 			uint8_t meta2;
 			uint8_t meta3;
 		}PieceSetup;
-	} data;
+	} Data;
 	
+	std::shared_ptr<void> Meta;
+	RSData_Command():ActionType(EActionType::Error),Player(EPlayerType::Empty),Data{0},Meta(nullptr){
 
-	std::shared_ptr<void> meta;
+	}
 };
