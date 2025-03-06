@@ -9,7 +9,7 @@ RS_IOManager& RS_IOManager::GetInstance() {
 }
 
 void RS_IOManager::Init() {
-
+    GetInstance();
 }
 
 void RS_IOManager::WriteData(uint8_t* data, size_t dataSize)
@@ -22,6 +22,11 @@ void RS_IOManager::WriteData(uint8_t* data, size_t dataSize)
 bool RS_IOManager::HasCommand()
 {
     return !std::cin.eof();
+}
+
+bool RS_IOManager::ShouldResolve()
+{
+    return !GetInstance().OutputQueue.empty() && !GetInstance().HoldFlag;
 }
 
 void RS_IOManager::FetchCommand(RSData_Command& command)

@@ -1,5 +1,6 @@
 #pragma once
 #include "Enums.h"
+#include <string>
 #include <vector>
 #include <memory>
 struct RSData_Map;
@@ -17,6 +18,7 @@ public:
 	// Called if CanDo is true
 	// Note that this will be called from CreateAction()
 	// NOT THE INSTANCE STORED IN RSData_Map
+	// Return true if this move need to be logged
 	virtual bool Do(RSData_Command& command, RSData_Map& map) = 0;
 	// Return if CommandAction stored in command should be blocked based on ***this***
 	// Will not process command if return false

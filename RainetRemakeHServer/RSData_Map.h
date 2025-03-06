@@ -7,11 +7,14 @@
 
 #define MAP_SIZE (8)
 struct RSData_Player;
+struct RSData_Command;
+
 struct RSData_Piece
 {
     RSData_Player* Player;
     EPieceType Type;
-    RSData_Piece(RSData_Player* player, EPieceType type):Player(player), Type(type){}
+    RSData_Piece** Slot;
+    RSData_Piece(RSData_Player* player, EPieceType type):Player(player), Type(type), Slot(nullptr){}
 };
 
 class RS_CommandAction;
@@ -39,18 +42,23 @@ struct RSData_Map
 private:
 
     RSData_Player playerData[2];
-    std::vector<RSData_Piece*> board;
+    RSData_Piece* board[MAP_SIZE * MAP_SIZE];
     // pieces
     EGameState gameState;
     static constexpr inline int CoordToID(uint8_t row, uint8_t col)  {
         return row * MAP_SIZE + col;
     }
+
 public:
 
     const uint32_t MaxTerminals;
     RSData_Map(uint32_t maxTerminals);
     const EGameState GetGameState() const;
     void SetGameState(EGameState newState);
+    RSData_Piece** getPieceSlot(uint8_t row, uint8_t col);
     RSData_Piece* getPiece(uint8_t row, uint8_t col);
     RSData_Player& getPlayer(bool isPlayer1);
+    bool IsBlockedByAnyTerminal(RSData_Command& command);
+
+    bool GetCoordFromSlot(RSData_Piece** slot, uint8_t& row, uint8_t& col);
 };

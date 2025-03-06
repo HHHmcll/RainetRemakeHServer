@@ -1,22 +1,19 @@
 
-#include "RS_IOManager.h"
 #include "RSData_Command.h"
 #include "RSData_Map.h"
+
+#include "RS_IOManager.h"
 #include "RS_CommandProcesser.h"
-
-
-
-class RS_GameLogManager {
-
-};
+#include "RS_Logger.h"
 
 class RS_GameInstance {
-	RSData_Map* _mapData;
-
+	RSData_Map* mapData;
+	RS_Logger* logger;
 private:
-	RS_GameInstance(){}
+	RS_GameInstance():mapData(nullptr),logger(nullptr){}
 	~RS_GameInstance(){
-		delete _mapData;
+		delete mapData;
+		delete logger;
 	}
 	static RS_GameInstance& Get() {
 		static RS_GameInstance instance = RS_GameInstance();
@@ -24,7 +21,8 @@ private:
 	}
 public:
 	static void Init(char** Args) {
-		Get()._mapData = new RSData_Map(4);
+		Get().mapData = new RSData_Map(4);
+		Get().logger = new RS_Logger("./out.txt");
 		// Parse Args
 		// Create new Map
 		// Get Ready to Tick
@@ -32,15 +30,20 @@ public:
 	}
 	static bool Tick() {
 		RSData_Command command;
-		if (RS_IOManager::HasCommand()) {
-			RS_IOManager::FetchCommand(command);
+		if (!RS_IOManager::HasCommand()) {
+			if (RS_IOManager::ShouldResolve()) {
+				RS_IOManager::ResolveOutput();
+				return true;
+			}
+		}
 
-			RS_CommandProcesser::ProcessCommand(command, *Get()._mapData);
+		RS_IOManager::FetchCommand(command);
 
-			//RS_GameLogManager::LogCommand();
-			//RS_IOManager::WriteResponse(command);
+		if (RS_CommandProcesser::ProcessCommand(command, *Get().mapData)) {
+
 		}
 		RS_IOManager::ResolveOutput();
+
 		return true;
 	}
 	static void Exit() {

@@ -17,10 +17,11 @@ class RS_IOManager {
 	bool HoldFlag = false;
 	void WriteData(uint8_t* data, size_t dataSize);
 public:
+	static void Init();
 	static bool HasCommand();
+	static bool ShouldResolve();
 	static void FetchCommand(RSData_Command& command);
 	static void QueueOutput(uint8_t* data, size_t dataSize);
 	static void Unhold();
 	static void ResolveOutput();
-	static void Init();
 };
