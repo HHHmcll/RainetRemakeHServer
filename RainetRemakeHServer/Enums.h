@@ -5,6 +5,7 @@ enum EPlayerType : uint8_t {
 	Player2,
 	Viewer,
 	God,
+	Everyone,
 	Empty
 };
 
@@ -22,7 +23,6 @@ enum EActionType : uint8_t {
 	
 	InitializeTerminal,
 	InitializePieces,
-	Start,
 	VisualEffet,
 	Error,
 

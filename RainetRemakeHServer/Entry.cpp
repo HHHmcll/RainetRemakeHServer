@@ -28,15 +28,19 @@ public:
 		// Parse Args
 		// Create new Map
 		// Get Ready to Tick
+		RS_IOManager::Init();
 	}
 	static bool Tick() {
 		RSData_Command command;
-		RS_IOManager::FetchCommand(command);
+		if (RS_IOManager::HasCommand()) {
+			RS_IOManager::FetchCommand(command);
 
-		RS_CommandProcesser::ProcessCommand(command, *Get()._mapData);
-		
-		//RS_GameLogManager::LogCommand();
-		//RS_IOManager::WriteResponse(command);
+			RS_CommandProcesser::ProcessCommand(command, *Get()._mapData);
+
+			//RS_GameLogManager::LogCommand();
+			//RS_IOManager::WriteResponse(command);
+		}
+		RS_IOManager::ResolveOutput();
 		return true;
 	}
 	static void Exit() {
