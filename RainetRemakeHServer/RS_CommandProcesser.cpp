@@ -7,9 +7,6 @@ bool RS_CommandProcesser::ProcessCommand(RSData_Command& command, RSData_Map& ma
     RS_CommandAction* action = RS_CommandActionManager::GetStaticAction(command.ActionType);
     if(action->CanDo(command,map)){
         return action->Do(command,map);
-
     }
-
-    //output.push_back(EActionType::Error);
     return false;
 }
