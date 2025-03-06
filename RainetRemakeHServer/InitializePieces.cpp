@@ -3,6 +3,10 @@
 #include "RSData_Map.h"
 #include "RSData_Command.h"
 
+CA_InitializePieces::CA_InitializePieces() {
+
+}
+
 std::shared_ptr<RS_CommandAction> CA_InitializePieces::CreateNewObject(void* meta) 
 {
 	return std::shared_ptr<RS_CommandAction>(nullptr);
@@ -16,7 +20,7 @@ bool CA_InitializePieces::CanDo(RSData_Command& command, RSData_Map& map)
 	if (map.GetGameState() != EGameState::Initialization){
 		return false;
 	}
-	if (command.Player != command.Player & 0x01){
+	if (command.Player != (command.Player & 0x01)){
 		return false;
 	}
 	return  true;

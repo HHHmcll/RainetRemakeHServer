@@ -1,8 +1,13 @@
 #include "LineBoost.h"
 #include "Enums.h"
 
+CA_LineBoost::CA_LineBoost() {
+
+}
+
 std::shared_ptr<RS_CommandAction> CA_LineBoost::CreateNewObject(void* meta)
 {
+	return std::shared_ptr<RS_CommandAction>(new CA_LineBoost());
 }
 
 bool CA_LineBoost::CanDo(RSData_Command& command, RSData_Map& map)

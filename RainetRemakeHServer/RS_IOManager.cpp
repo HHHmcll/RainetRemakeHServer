@@ -10,6 +10,7 @@ void RS_IOManager::FetchCommand(RSData_Command& command)
     command.ActionType = EActionType(std::cin.get());
 
     switch (command.ActionType) {
+    case EActionType::GetOutput:
     case EActionType::BoardDisplay:
     case EActionType::Error:
     
@@ -20,19 +21,21 @@ void RS_IOManager::FetchCommand(RSData_Command& command)
         break;
     case EActionType::VisualEffet:
     case EActionType::InitializeTerminal:
+    {
         command.Data.Raw.byte1 = std::cin.get();
         command.Data.Raw.byte2 = std::cin.get();
         command.Data.Raw.byte3 = std::cin.get();
         command.Data.Raw.byte4 = std::cin.get();
 
         uint32_t numTerminal = command.Data.TerminalSetup;
-        auto * terminalData = new std::vector<EActionType>();
+        auto* terminalData = new std::vector<EActionType>();
         terminalData->reserve(numTerminal);
         command.Meta = std::shared_ptr<void>((void*)(terminalData));
-        for(int i= 0;i<numTerminal;i++){
+        for (int i = 0; i < numTerminal; i++) {
             terminalData->push_back(EActionType(std::cin.get()));
         }
         break;
+    }
     case EActionType::Move:
     case EActionType::LineBoost:
     case EActionType::FireWall:
@@ -41,13 +44,14 @@ void RS_IOManager::FetchCommand(RSData_Command& command)
     case EActionType::Rabbit:
     case EActionType::ZeroDayAttack:
     case EActionType::SandBox:
-
+    {
         command.Data.Coordinate.col1 = std::cin.get();
         command.Data.Coordinate.row1 = std::cin.get();
 
         command.Data.Coordinate.col2 = std::cin.get();
         command.Data.Coordinate.row2 = std::cin.get();
         break;
+    }
     default:
 
         break;

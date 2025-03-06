@@ -4,5 +4,5 @@ struct RSData_Map;
 
 class RS_CommandProcesser {
 public:
-    static bool ProcessCommand(RSData_Command& command, RSData_Map& map, std::vector<uint8_t>& output);
+    static bool ProcessCommand(RSData_Command& command, RSData_Map& map);
 };

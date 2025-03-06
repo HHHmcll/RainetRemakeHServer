@@ -2,12 +2,12 @@
 #include "RS_CommandActionManager.h"
 #include "RSData_Command.h"
 
-bool RS_CommandProcesser::ProcessCommand(RSData_Command& command, RSData_Map& map, std::vector<uint8_t>& output)
+bool RS_CommandProcesser::ProcessCommand(RSData_Command& command, RSData_Map& map)
 {
     RS_CommandAction* action = RS_CommandActionManager::GetStaticAction(command.ActionType);
     if(action->CanDo(command,map)){
-        return action->Do(command,map,output);
+        return action->Do(command,map);
     }
-    output.push_back(EActionType::Error);
+    //output.push_back(EActionType::Error);
     return false;
 }

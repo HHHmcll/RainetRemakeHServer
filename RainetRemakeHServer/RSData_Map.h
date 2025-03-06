@@ -6,6 +6,7 @@
 #include <memory>
 
 #define MAP_SIZE (8)
+struct RSData_Player;
 struct RSData_Piece
 {
     RSData_Player* Player;
@@ -48,8 +49,8 @@ public:
 
     const uint32_t MaxTerminals;
     RSData_Map(uint32_t maxTerminals);
-    inline const EGameState GetGameState() const;
-    inline void SetGameState(EGameState newState);
-    inline RSData_Piece* getPiece(uint8_t row, uint8_t col);
-    inline RSData_Player& getPlayer(bool isPlayer1);
+    const EGameState GetGameState() const;
+    void SetGameState(EGameState newState);
+    RSData_Piece* getPiece(uint8_t row, uint8_t col);
+    RSData_Player& getPlayer(bool isPlayer1);
 };

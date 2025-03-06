@@ -3,6 +3,11 @@
 #include "RSData_Map.h"
 #include "RSData_Command.h"
 #include <vector>
+
+CA_InitializeTerminal::CA_InitializeTerminal() {
+
+}
+
 std::shared_ptr<RS_CommandAction> CA_InitializeTerminal::CreateNewObject(void* meta)
 {
 	return std::shared_ptr<RS_CommandAction>(nullptr);
@@ -16,7 +21,7 @@ bool CA_InitializeTerminal::CanDo(RSData_Command& command, RSData_Map& map)
 	if (map.GetGameState() != EGameState::Initialization){
 		return false;
 	}
-	if (command.Player != command.Player & 0x01){
+	if (command.Player != (command.Player & 0x01)){
 		return false;
 	}
 	if (command.Data.TerminalSetup != map.MaxTerminals){

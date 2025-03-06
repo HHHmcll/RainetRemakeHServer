@@ -1,5 +1,8 @@
 #include "RS_CommandActionManager.h"
 
+
+CreateActionFunction RS_CommandActionManager::AllStaticActions[EActionType::Num] = {};
+
 RS_CommandAction* RS_CommandActionManager::GetStaticAction(EActionType actionType)
 {
 	auto createFunction = AllStaticActions[unsigned long long(actionType)];

@@ -1,5 +1,5 @@
 #pragma once
-
+#include <stdint.h>
 enum EPlayerType : uint8_t {
 	Player1,
 	Player2,

@@ -29,7 +29,7 @@ typedef RS_CommandAction* (*CreateActionFunction)(void) ;
 
 class RS_CommandActionManager{
 	
-	static CreateActionFunction AllStaticActions[unsigned long long (EActionType::Num)];
+	static CreateActionFunction AllStaticActions[EActionType::Num];
 	friend class RS_CommandActionCreateFunction;
 public:
 	static RS_CommandAction* GetStaticAction(EActionType actionType);

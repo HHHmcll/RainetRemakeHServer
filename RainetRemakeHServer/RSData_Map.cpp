@@ -41,14 +41,14 @@ RSData_Piece* RSData_Map::getPiece(uint8_t row, uint8_t col)
 	return board[CoordToID(row,col)];
 }
 
-inline RSData_Player& RSData_Map::getPlayer(bool isPlayer1)
+RSData_Player& RSData_Map::getPlayer(bool isPlayer1)
 {
 	return playerData[!isPlayer1] ;
 }
-inline const EGameState RSData_Map::GetGameState() const{
+const EGameState RSData_Map::GetGameState() const{
 	return gameState;
 }
 
-inline void RSData_Map::SetGameState(EGameState newState){
+void RSData_Map::SetGameState(EGameState newState){
 	gameState = newState;
 }
