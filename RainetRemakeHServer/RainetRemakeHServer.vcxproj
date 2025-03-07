@@ -24,6 +24,7 @@
     <ClInclude Include="InitializePieces.h" />
     <ClInclude Include="InitializeTerminal.h" />
     <ClInclude Include="LineBoost.h" />
+    <ClInclude Include="Move.h" />
     <ClInclude Include="RSData_Command.h" />
     <ClInclude Include="RSData_Map.h" />
     <ClInclude Include="RS_CommandActionManager.h" />
@@ -38,6 +39,7 @@
     <ClCompile Include="InitializePieces.cpp" />
     <ClCompile Include="InitializeTerminal.cpp" />
     <ClCompile Include="LineBoost.cpp" />
+    <ClCompile Include="Move.cpp" />
     <ClCompile Include="RSData_Map.cpp" />
     <ClCompile Include="RS_CommandActionManager.cpp" />
     <ClCompile Include="RS_CommandProcesser.cpp" />

@@ -70,11 +70,9 @@ void RS_IOManager::FetchCommand(RSData_Command& command)
     case EActionType::ZeroDayAttack:
     case EActionType::SandBox:
     {
-        command.Data.Coordinate.col1 = std::cin.get();
-        command.Data.Coordinate.row1 = std::cin.get();
-
-        command.Data.Coordinate.col2 = std::cin.get();
-        command.Data.Coordinate.row2 = std::cin.get();
+        for (uint8_t& byte : command.Data.RawByte) {
+            byte = std::cin.get();
+        }
         break;
     }
     default:

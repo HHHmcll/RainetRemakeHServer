@@ -9,8 +9,8 @@ struct RSData_Command {
 	{
 		struct
 		{
-			uint8_t col1, row1;
-			uint8_t col2, row2;
+			int8_t col1, row1;
+			int8_t col2, row2;
 		} Coordinate;
 		uint32_t TerminalSetup;
 		struct 

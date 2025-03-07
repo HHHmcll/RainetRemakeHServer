@@ -29,14 +29,17 @@ bool CA_LineBoost::CanDo(RSData_Command& command, RSData_Map& map)
         }
     }
     else {
-        if (!map.getPiece(command.Data.Coordinate.row1, command.Data.Coordinate.col1)) {
+        RSData_Piece* piece = map.getPiece(command.Data.Coordinate.row1, command.Data.Coordinate.col1);
+        if (!piece || piece->Player->PlayerID != command.Player) {
             return false;
         }
     }
     return true;
 }
+
 bool CA_LineBoost::Do(RSData_Command& command, RSData_Map& map)
 {
+
     // check whether the piece is installed
     if (InstalledPiece) {
         // remove the installed lb
@@ -47,13 +50,14 @@ bool CA_LineBoost::Do(RSData_Command& command, RSData_Map& map)
         InstalledPiece = map.getPiece(command.Data.Coordinate.row1, command.Data.Coordinate.col1);
     }
     return true;
+
 }
 
 EBlock_Status CA_LineBoost::Block(RSData_Player* owner, RSData_Command& command, RSData_Map& map)
 {
     
-    uint8_t& row1 = command.Data.Coordinate.row1;
-    uint8_t& col1 = command.Data.Coordinate.col1;
+    int8_t& row1 = command.Data.Coordinate.row1;
+    int8_t& col1 = command.Data.Coordinate.col1;
 
     switch (command.ActionType)
     {

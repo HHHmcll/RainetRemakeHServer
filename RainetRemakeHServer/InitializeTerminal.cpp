@@ -74,4 +74,4 @@ RS_CommandAction* CreateInitializeTerminal() {
 	return &instance;
 }
 
-RS_CommandActionCreateFunction createInitializeTerminalFunction = RS_CommandActionCreateFunction(EActionType::LineBoost, &CreateInitializeTerminal);
+RS_CommandActionCreateFunction createInitializeTerminalFunction = RS_CommandActionCreateFunction(EActionType::InitializeTerminal, &CreateInitializeTerminal);

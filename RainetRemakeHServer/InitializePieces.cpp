@@ -58,4 +58,4 @@ RS_CommandAction* GetStaticInitializePieces() {
 	return &instance;
 }
 
-RS_CommandActionCreateFunction createInitializePieceFunction = RS_CommandActionCreateFunction(EActionType::LineBoost, &GetStaticInitializePieces);
+RS_CommandActionCreateFunction createInitializePieceFunction = RS_CommandActionCreateFunction(EActionType::InitializePieces, &GetStaticInitializePieces);

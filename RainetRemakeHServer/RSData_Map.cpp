@@ -27,7 +27,7 @@ bool RSData_Player::ForEachTerminal(std::function<bool(RS_CommandAction*)> callb
 
 RSData_Map::RSData_Map(uint32_t maxTerminals)
 	:playerData{RSData_Player(0),RSData_Player(1)},
-	board{0},
+	board{0}, 
 	gameState(EGameState::Initialization),
 	MaxTerminals(maxTerminals)
 {
