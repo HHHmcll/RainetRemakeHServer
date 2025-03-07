@@ -77,7 +77,6 @@ bool CA_LineBoost::Block(RSData_Player* owner, RSData_Command& command, RSData_M
                 }
             )) 
             {
-
                 return true;
             }
 

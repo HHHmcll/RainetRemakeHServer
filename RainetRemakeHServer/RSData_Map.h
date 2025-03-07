@@ -6,7 +6,7 @@
 #include <memory>
 #include <functional>
 
-#define MAP_SIZE (8)
+#define MAP_SIZE  8 
 struct RSData_Player;
 struct RSData_Command;
 

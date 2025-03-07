@@ -20,14 +20,9 @@ struct RSData_Command {
 			uint8_t meta2;
 			uint8_t meta3;
 		}PieceSetup;
-		struct
-		{
-			uint8_t byte1;
-			uint8_t byte2;
-			uint8_t byte3;
-			uint8_t byte4;
-		}Raw;
-		
+
+		uint8_t RawByte[4];
+
 	} Data;
 	
 	std::shared_ptr<void> Meta;

@@ -48,7 +48,8 @@ bool CA_InitializeTerminal::Do(RSData_Command& command, RSData_Map& map)
 {
 	RSData_Player player = map.getPlayer(command.Player);
 	player.Cards.clear();
-	std::vector<EActionType>* terminals = (std::vector<EActionType>*)command.Meta.get();
+	std::vector<EActionType>* terminals = static_cast<std::vector<EActionType>*>(command.Meta.get());
+
 	for(EActionType terminal : *terminals){
 		player.Cards[terminal] = RS_CommandActionManager::GetStaticAction(terminal)->CreateNewObject(nullptr);
 	}

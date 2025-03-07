@@ -48,10 +48,9 @@ void RS_IOManager::FetchCommand(RSData_Command& command)
     case EActionType::VisualEffet:
     case EActionType::InitializeTerminal:
     {
-        command.Data.Raw.byte1 = std::cin.get();
-        command.Data.Raw.byte2 = std::cin.get();
-        command.Data.Raw.byte3 = std::cin.get();
-        command.Data.Raw.byte4 = std::cin.get();
+        for (uint8_t& byte : command.Data.RawByte) {
+            byte = std::cin.get();
+        }
 
         uint32_t numTerminal = command.Data.TerminalSetup;
         auto* terminalData = new std::vector<EActionType>();
@@ -84,8 +83,6 @@ void RS_IOManager::FetchCommand(RSData_Command& command)
     }
 
 }
-
-
 
 void RS_IOManager::QueueOutput(uint8_t* data, size_t dataSize)
 {
