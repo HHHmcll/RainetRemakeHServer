@@ -99,13 +99,15 @@ void RS_Logger::Save()
             }
             logFile << "\n";
             break;
-        case EActionType::InitializeTerminal:
+        case EActionType::InitializeTerminal: 
+        {
             logFile << PlayerTypeToString(Data.Player) << "\t" << ActionTypeToString(Data.ActionType);
             std::vector<EActionType>* terminals = static_cast<std::vector<EActionType>*>(Data.Meta.get());
             for (EActionType terminal : *terminals) {
                 logFile << "\t" << ActionTypeToString(terminal);
             }
             logFile << "\n";
+        }
             break;
         case EActionType::Move:
         case EActionType::LineBoost:

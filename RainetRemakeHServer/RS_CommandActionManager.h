@@ -7,6 +7,12 @@ struct RSData_Map;
 struct RSData_Command;
 struct RSData_Player;
 
+enum class EBlock_Status {
+	Pass,	// Action Accepted by a Block Check
+	Block,	// Action Rejected by a Block Check
+	Ignored	// Action is not Related To this Block Check
+};
+
 class RS_CommandAction {
 public:
 	// Create a object of self
@@ -23,7 +29,7 @@ public:
 	// Return if CommandAction stored in command should be blocked based on ***this***
 	// Will not process command if return false
 	// Will be called from the instance stored in RSData_Map
-	virtual bool Block(RSData_Player* owner, RSData_Command& command, RSData_Map& map) = 0;
+	virtual EBlock_Status Block(RSData_Player* owner, RSData_Command& command, RSData_Map& map) = 0;
 
 	
 };

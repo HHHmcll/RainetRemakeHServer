@@ -17,7 +17,7 @@ bool CA_LineBoost::CanDo(RSData_Command& command, RSData_Map& map)
     // check whether wil be blocked by other cards
     if (map.ForEachPlayer([&](RSData_Player* player)->bool{
         return player->ForEachTerminal([&](RS_CommandAction* action)->bool {
-            return action->Block(player, command, map);
+            return action->Block(player, command, map) != EBlock_Status::Block;
         });
     })) {
         return false;
@@ -49,7 +49,7 @@ bool CA_LineBoost::Do(RSData_Command& command, RSData_Map& map)
     return true;
 }
 
-bool CA_LineBoost::Block(RSData_Player* owner, RSData_Command& command, RSData_Map& map)
+EBlock_Status CA_LineBoost::Block(RSData_Player* owner, RSData_Command& command, RSData_Map& map)
 {
     
     uint8_t& row1 = command.Data.Coordinate.row1;
@@ -77,14 +77,14 @@ bool CA_LineBoost::Block(RSData_Player* owner, RSData_Command& command, RSData_M
                 }
             )) 
             {
-                return true;
+                return EBlock_Status::Block;
             }
 
         }
     default:
         break;
     }
-    return false;
+    return EBlock_Status::Ignored;
 }
 
 
