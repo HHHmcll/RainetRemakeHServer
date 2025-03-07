@@ -4,20 +4,22 @@
 #include <map>
 #include <vector>
 #include <memory>
+#include <functional>
 
 #define MAP_SIZE (8)
 struct RSData_Player;
 struct RSData_Command;
+
+class RS_CommandAction;
 
 struct RSData_Piece
 {
     RSData_Player* Player;
     EPieceType Type;
     RSData_Piece** Slot;
-    RSData_Piece(RSData_Player* player, EPieceType type):Player(player), Type(type), Slot(nullptr){}
+    RSData_Piece(RSData_Player* player, EPieceType type);
 };
 
-class RS_CommandAction;
 
 struct RSData_Player
 {
@@ -27,13 +29,8 @@ struct RSData_Player
     std::map<EActionType, std::shared_ptr<RS_CommandAction>> Cards;
     RSData_Piece pieces[MAP_SIZE];
     
-    RSData_Player(uint8_t playerID):
-    PlayerID(playerID),LinkAte(0),LinkEnter(0),VirusAte(0),VirusEnter(0),
-    pieces{RSData_Piece(this,EPieceType::Unknown), RSData_Piece(this,EPieceType::Unknown),
-        RSData_Piece(this,EPieceType::Unknown), RSData_Piece(this,EPieceType::Unknown),
-        RSData_Piece(this,EPieceType::Unknown), RSData_Piece(this,EPieceType::Unknown),
-        RSData_Piece(this,EPieceType::Unknown), RSData_Piece(this,EPieceType::Unknown)}
-    {}
+    RSData_Player(uint8_t playerID);
+    bool ForEachTerminal(std::function<bool(RS_CommandAction*)> callback);
 };
 
 
@@ -58,7 +55,10 @@ public:
     RSData_Piece** getPieceSlot(uint8_t row, uint8_t col);
     RSData_Piece* getPiece(uint8_t row, uint8_t col);
     RSData_Player& getPlayer(bool isPlayer1);
-    bool IsBlockedByAnyTerminal(RSData_Command& command);
 
+
+    // will return true and stop following iteration if callback return true
+    // return false otherwise
+    bool ForEachPlayer(std::function<bool(RSData_Player*)> callback);
     bool GetCoordFromSlot(RSData_Piece** slot, uint8_t& row, uint8_t& col);
 };

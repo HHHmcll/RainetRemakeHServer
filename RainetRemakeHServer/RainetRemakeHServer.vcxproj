@@ -18,6 +18,33 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Enums.h" />
+    <ClInclude Include="GetOutput.h" />
+    <ClInclude Include="InitializePieces.h" />
+    <ClInclude Include="InitializeTerminal.h" />
+    <ClInclude Include="LineBoost.h" />
+    <ClInclude Include="RSData_Command.h" />
+    <ClInclude Include="RSData_Map.h" />
+    <ClInclude Include="RS_CommandActionManager.h" />
+    <ClInclude Include="RS_CommandProcesser.h" />
+    <ClInclude Include="RS_GameInstance.h" />
+    <ClInclude Include="RS_IOManager.h" />
+    <ClInclude Include="RS_Logger.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Entry.cpp" />
+    <ClCompile Include="GetOutput.cpp" />
+    <ClCompile Include="InitializePieces.cpp" />
+    <ClCompile Include="InitializeTerminal.cpp" />
+    <ClCompile Include="LineBoost.cpp" />
+    <ClCompile Include="RSData_Map.cpp" />
+    <ClCompile Include="RS_CommandActionManager.cpp" />
+    <ClCompile Include="RS_CommandProcesser.cpp" />
+    <ClCompile Include="RS_GameInstance.cpp" />
+    <ClCompile Include="RS_IOManager.cpp" />
+    <ClCompile Include="RS_Logger.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -29,26 +56,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -138,21 +165,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="CommandActionManager.cpp" />
-    <ClCompile Include="Entry.cpp" />
-    <ClCompile Include="LineBoost.cpp" />
-    <ClCompile Include="RSData_Map.cpp" />
-    <ClCompile Include="RS_IOManager.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="RS_CommandActionManager.h" />
-    <ClInclude Include="LineBoost.h" />
-    <ClInclude Include="Enums.h" />
-    <ClInclude Include="RSData_Command.h" />
-    <ClInclude Include="RSData_Map.h" />
-    <ClInclude Include="RS_IOManager.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

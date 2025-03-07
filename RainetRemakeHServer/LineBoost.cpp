@@ -3,7 +3,8 @@
 #include "RSData_Map.h"
 #include "RSData_Command.h"
 
-CA_LineBoost::CA_LineBoost() {}
+CA_LineBoost::CA_LineBoost():
+    InstalledPiece(nullptr){}
 
 std::shared_ptr<RS_CommandAction> CA_LineBoost::CreateNewObject(void* meta)
 {
@@ -14,12 +15,16 @@ std::shared_ptr<RS_CommandAction> CA_LineBoost::CreateNewObject(void* meta)
 bool CA_LineBoost::CanDo(RSData_Command& command, RSData_Map& map)
 {
     // check whether wil be blocked by other cards
-    if (map.IsBlockedByAnyTerminal(command)) {
+    if (map.ForEachPlayer([&](RSData_Player* player)->bool{
+        return player->ForEachTerminal([&](RS_CommandAction* action)->bool {
+            return action->Block(player, command, map);
+        });
+    })) {
         return false;
     }
-    if (installedPiece) {
+    if (InstalledPiece) {
         RSData_Piece* piece = map.getPiece(command.Data.Coordinate.row1, command.Data.Coordinate.col1);
-        if (piece != installedPiece) {
+        if (piece != InstalledPiece) {
             return false;
         }
     }
@@ -33,34 +38,56 @@ bool CA_LineBoost::CanDo(RSData_Command& command, RSData_Map& map)
 bool CA_LineBoost::Do(RSData_Command& command, RSData_Map& map)
 {
     // check whether the piece is installed
-    if (installedPiece) {
+    if (InstalledPiece) {
         // remove the installed lb
-        installedPiece = nullptr;
+        InstalledPiece = nullptr;
     }
     else {
         // install the lb on the selected piece
-        installedPiece = map.getPiece(command.Data.Coordinate.row1, command.Data.Coordinate.col1);
+        InstalledPiece = map.getPiece(command.Data.Coordinate.row1, command.Data.Coordinate.col1);
     }
     return true;
 }
 
-bool CA_LineBoost::Block(RSData_Command& command, RSData_Map& map)
+bool CA_LineBoost::Block(RSData_Player* owner, RSData_Command& command, RSData_Map& map)
 {
-
+    
     uint8_t& row1 = command.Data.Coordinate.row1;
     uint8_t& col1 = command.Data.Coordinate.col1;
 
-    // SandBox only can be used on the piece installed lineboost
-    if (command.ActionType == EActionType::SandBox)
+    switch (command.ActionType)
     {
-        // block SB if the selected piece is not installed on lineboost
-        if(!installedPiece || installedPiece != map.getPiece(row1, col1) || installedPiece->Player->PlayerID != command.Player)
+    case EActionType::SandBox:
+        // SandBox only can be used on the piece installed lineboost
+        if (owner && command.Player == owner->PlayerID)
         {
-            return true; 
+            if (!map.ForEachPlayer([&](RSData_Player* player)
+                {
+                    if (!player->Cards[EActionType::LineBoost])
+                    {
+                        return false;
+                    }
+                    // Can SB if the selected piece is installed on lineboost
+                    CA_LineBoost* card = dynamic_cast<CA_LineBoost*>(player->Cards[EActionType::LineBoost].get());
+                    if (card->InstalledPiece && card->InstalledPiece == map.getPiece(row1, col1))
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+            )) 
+            {
+
+                return true;
+            }
+
         }
+    default:
+        break;
     }
     return false;
 }
+
 
 
 RS_CommandAction* GetStaticLineBoost() {

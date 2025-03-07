@@ -23,7 +23,8 @@ public:
 	// Return if CommandAction stored in command should be blocked based on ***this***
 	// Will not process command if return false
 	// Will be called from the instance stored in RSData_Map
-	virtual bool Block(RSData_Command& command, RSData_Map& map) = 0;
+	virtual bool Block(RSData_Player* owner, RSData_Command& command, RSData_Map& map) = 0;
+
 	
 };
 

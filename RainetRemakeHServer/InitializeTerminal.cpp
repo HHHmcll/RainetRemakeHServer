@@ -53,16 +53,19 @@ bool CA_InitializeTerminal::Do(RSData_Command& command, RSData_Map& map)
 		player.Cards[terminal] = RS_CommandActionManager::GetStaticAction(terminal)->CreateNewObject(nullptr);
 	}
 
-	if(Block(command,map) || RS_CommandActionManager::GetStaticAction(EActionType::InitializeTerminal)->Block(command,map)){
+	if(Block(nullptr,command,map) || RS_CommandActionManager::GetStaticAction(EActionType::InitializeTerminal)->Block(nullptr, command,map)){
 		// not yet initialized
    	}
    
 	return true;
 }
 
-bool CA_InitializeTerminal::Block(RSData_Command& command, RSData_Map& map)
+bool CA_InitializeTerminal::Block(RSData_Player* owner, RSData_Command& command, RSData_Map& map)
 {
-	return Initialized[0] && Initialized[1];
+	for (bool initialized : Initialized) {
+		if (initialized) return false;
+	}
+	return true;
 }
 
 RS_CommandAction* CreateInitializeTerminal() {

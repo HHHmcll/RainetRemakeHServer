@@ -2,6 +2,29 @@
 
 #include "RS_CommandActionManager.h"
 
+RSData_Piece::RSData_Piece(RSData_Player* player, EPieceType type):
+	Player(player), Type(type), Slot(nullptr)
+{}
+
+RSData_Player::RSData_Player(uint8_t playerID) :
+	PlayerID(playerID), LinkAte(0), LinkEnter(0), VirusAte(0), VirusEnter(0),
+	pieces{ RSData_Piece(this,EPieceType::Unknown), RSData_Piece(this,EPieceType::Unknown),
+		RSData_Piece(this,EPieceType::Unknown), RSData_Piece(this,EPieceType::Unknown),
+		RSData_Piece(this,EPieceType::Unknown), RSData_Piece(this,EPieceType::Unknown),
+		RSData_Piece(this,EPieceType::Unknown), RSData_Piece(this,EPieceType::Unknown) }
+{}
+
+bool RSData_Player::ForEachTerminal(std::function<bool(RS_CommandAction*)> callback)
+{
+	for (auto terminal : Cards)
+	{
+		if (callback(terminal.second.get())) {
+			return true;
+		}
+	}
+	return false;
+}
+
 RSData_Map::RSData_Map(uint32_t maxTerminals)
 	:playerData{RSData_Player(0),RSData_Player(1)},
 	board{0},
@@ -38,6 +61,7 @@ RSData_Map::RSData_Map(uint32_t maxTerminals)
 	}
 }
 
+
 RSData_Piece* RSData_Map::getPiece(uint8_t row, uint8_t col)
 {
 	return *getPieceSlot(row,col);
@@ -54,6 +78,16 @@ RSData_Player& RSData_Map::getPlayer(bool isPlayer1)
 	return playerData[!isPlayer1] ;
 }
 
+bool RSData_Map::ForEachPlayer(std::function<bool(RSData_Player*)> callback)
+{
+	for (RSData_Player& player : playerData)
+	{
+		if (callback(&player)) {
+			return true;
+		}
+	}
+	return false;
+}
 
 const EGameState RSData_Map::GetGameState() const{
 	return gameState;
@@ -61,20 +95,6 @@ const EGameState RSData_Map::GetGameState() const{
 
 void RSData_Map::SetGameState(EGameState newState){
 	gameState = newState;
-}
-
-bool RSData_Map::IsBlockedByAnyTerminal(RSData_Command& command) {
-	for (RSData_Player& player : playerData)
-	{
-		for (auto terminal : player.Cards)
-		{
-			if (terminal.second->Block(command, *this))
-			{
-				return true;
-			}
-		}
-	}
-	return false;
 }
 
 bool RSData_Map::GetCoordFromSlot(RSData_Piece** slot, uint8_t& row, uint8_t& col)

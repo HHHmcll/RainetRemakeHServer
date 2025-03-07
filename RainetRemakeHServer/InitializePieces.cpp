@@ -37,17 +37,21 @@ bool CA_InitializePieces::Do(RSData_Command& command, RSData_Map& map)
 	}
 	Initialized[command.Player] = true;
 
-	if(Block(command,map) || RS_CommandActionManager::GetStaticAction(EActionType::InitializeTerminal)->Block(command,map)){
+	if(Block(nullptr, command,map) || RS_CommandActionManager::GetStaticAction(EActionType::InitializeTerminal)->Block(nullptr, command,map)){
  		// not yet initialized
 	}
 
 	return true;
 }
 
-bool CA_InitializePieces::Block(RSData_Command& command, RSData_Map& map)
+bool CA_InitializePieces::Block(RSData_Player* owner, RSData_Command& command, RSData_Map& map)
 {
-	return Initialized[0] && Initialized[1];
+	for (bool initialized : Initialized) {
+		if (initialized) return false;
+	}
+	return true;
 }
+
 
 RS_CommandAction* GetStaticInitializePieces() {
 	static CA_InitializePieces instance = CA_InitializePieces();

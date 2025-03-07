@@ -21,7 +21,7 @@ bool CA_GetOutput::Do(RSData_Command& command, RSData_Map& map)
 	return true;
 }
 
-bool CA_GetOutput::Block(RSData_Command& command, RSData_Map& map)
+bool CA_GetOutput::Block(RSData_Player* owner, RSData_Command& command, RSData_Map& map)
 {
 	return false;
 }

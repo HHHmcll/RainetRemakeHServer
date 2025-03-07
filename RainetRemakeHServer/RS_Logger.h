@@ -6,5 +6,5 @@ class RS_Logger {
 public:
 	RS_Logger(const char* path);
 	void LogMove(RSData_Command& move);
-	void Save()
+	void Save();
 };
