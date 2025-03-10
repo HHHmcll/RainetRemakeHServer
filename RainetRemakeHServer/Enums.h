@@ -1,5 +1,6 @@
 #pragma once
 #include <stdint.h>
+#include <utility>
 enum EPlayerType : uint8_t {
 	Player1,
 	Player2,
@@ -45,4 +46,17 @@ enum EGameState : uint8_t{
 	WaitingPlayer1,
 	WaitingPlayer2,
 	End
+};
+
+template <typename T>
+class has_static_member {
+private:
+	template <typename U>
+	static auto test(int) -> decltype(U::StaticType, std::true_type());
+
+	template <typename>
+	static std::false_type test(...);
+
+public:
+	static constexpr bool value = decltype(test<T>(0))::value;
 };

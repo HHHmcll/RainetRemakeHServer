@@ -6,6 +6,7 @@
 struct RSData_Map;
 struct RSData_Command;
 struct RSData_Player;
+struct RSData_Slot;
 
 enum class EBlock_Status {
 	Pass,	// Action Accepted by a Block Check
@@ -15,33 +16,37 @@ enum class EBlock_Status {
 
 class RS_CommandAction {
 public:
-	// Create a object of self
-	virtual std::shared_ptr<RS_CommandAction> CreateNewObject(void* meta) = 0;
 	// Called directly before Do. Will not call Do if returned false;
 	// Note that this will be called from CreateAction()
 	// NOT THE INSTANCE STORED IN RSData_Map
-	virtual bool CanDo(RSData_Command& command, RSData_Map& map) = 0;
+	virtual bool CanDo(RSData_Command& command, RSData_Map& map) const = 0;
 	// Called if CanDo is true
 	// Note that this will be called from CreateAction()
 	// NOT THE INSTANCE STORED IN RSData_Map
 	// Return true if this move need to be logged
-	virtual bool Do(RSData_Command& command, RSData_Map& map) = 0;
-	// Return if CommandAction stored in command should be blocked based on ***this***
-	// Will not process command if return false
-	// Will be called from the instance stored in RSData_Map
-	virtual EBlock_Status Block(RSData_Player* owner, RSData_Command& command, RSData_Map& map) = 0;
+	virtual bool Do(RSData_Command& command, RSData_Map& map) const = 0;
 
-	
+
 };
 
-typedef RS_CommandAction* (*CreateActionFunction)(void) ;
+class RS_TerminalCard : public RS_CommandAction{
+public:
+	// Create a object of self
+	virtual std::shared_ptr<RS_TerminalCard> CreateNewObject(void* meta) const = 0;
+	//Return true if this slot is eligible for this CommandAction
+	virtual bool Is(const RSData_Slot* slot) const = 0;
+};
+
+typedef const RS_CommandAction* (*CreateActionFunction)(void) ;
 
 class RS_CommandActionManager{
 	
 	static CreateActionFunction AllStaticActions[EActionType::Num];
 	friend class RS_CommandActionCreateFunction;
 public:
-	static RS_CommandAction* GetStaticAction(EActionType actionType);
+	template <typename ActionClass>
+	static const ActionClass* GetStaticAction();
+	static const RS_CommandAction* GetStaticAction(EActionType actionType);
 };
 
 
@@ -50,3 +55,10 @@ class RS_CommandActionCreateFunction {
 public:
 	RS_CommandActionCreateFunction(EActionType actionType, CreateActionFunction getStaticFunction);
 };
+
+template<typename ActionClass>
+const ActionClass* RS_CommandActionManager::GetStaticAction()
+{
+	static_assert(has_static_member<ActionClass>::value);
+	return dynamic_cast<const ActionClass*>(GetStaticAction(ActionClass::StaticType));
+}

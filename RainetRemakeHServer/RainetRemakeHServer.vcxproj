@@ -20,11 +20,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Enums.h" />
-    <ClInclude Include="GetOutput.h" />
-    <ClInclude Include="InitializePieces.h" />
-    <ClInclude Include="InitializeTerminal.h" />
-    <ClInclude Include="LineBoost.h" />
-    <ClInclude Include="Move.h" />
+    <ClInclude Include="CA_GetOutput.h" />
+    <ClInclude Include="CA_InitializePieces.h" />
+    <ClInclude Include="CA_InitializeTerminal.h" />
+    <ClInclude Include="CA_LineBoost.h" />
+    <ClInclude Include="CA_Move.h" />
     <ClInclude Include="RSData_Command.h" />
     <ClInclude Include="RSData_Map.h" />
     <ClInclude Include="RS_CommandActionManager.h" />
@@ -35,11 +35,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entry.cpp" />
-    <ClCompile Include="GetOutput.cpp" />
-    <ClCompile Include="InitializePieces.cpp" />
-    <ClCompile Include="InitializeTerminal.cpp" />
-    <ClCompile Include="LineBoost.cpp" />
-    <ClCompile Include="Move.cpp" />
+    <ClCompile Include="CA_GetOutput.cpp" />
+    <ClCompile Include="CA_InitializePieces.cpp" />
+    <ClCompile Include="CA_InitializeTerminal.cpp" />
+    <ClCompile Include="CA_LineBoost.cpp" />
+    <ClCompile Include="CA_Move.cpp" />
     <ClCompile Include="RSData_Map.cpp" />
     <ClCompile Include="RS_CommandActionManager.cpp" />
     <ClCompile Include="RS_CommandProcesser.cpp" />
@@ -117,6 +117,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -131,6 +132,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -145,6 +147,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -159,6 +162,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

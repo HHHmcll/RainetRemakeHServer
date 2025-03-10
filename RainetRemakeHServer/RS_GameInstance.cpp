@@ -9,19 +9,19 @@
 #include "RS_Logger.h"
 
 
-inline RS_GameInstance::RS_GameInstance() :mapData(nullptr), logger(nullptr),ShouldAbort(false) {}
+RS_GameInstance::RS_GameInstance() :mapData(nullptr), logger(nullptr),ShouldAbort(false) {}
 
-inline RS_GameInstance::~RS_GameInstance() {
+RS_GameInstance::~RS_GameInstance() {
 	delete mapData;
 	delete logger;
 }
 
-inline RS_GameInstance& RS_GameInstance::Get() {
+RS_GameInstance& RS_GameInstance::Get() {
 	static RS_GameInstance instance = RS_GameInstance();
 	return instance;
 }
 
-inline void RS_GameInstance::Init(int argc, char* argv[]) {
+void RS_GameInstance::Init(int argc, char* argv[]) {
 
 	Get().mapData = new RSData_Map(4);
 	Get().logger = new RS_Logger("./out.txt");
@@ -31,7 +31,7 @@ inline void RS_GameInstance::Init(int argc, char* argv[]) {
 	RS_IOManager::Init();
 }
 
-inline bool RS_GameInstance::Tick() {
+bool RS_GameInstance::Tick() {
 	RSData_Command command;
 	if (!RS_IOManager::HasCommand()) {
 		if (RS_IOManager::ShouldResolve()) {
@@ -50,7 +50,7 @@ inline bool RS_GameInstance::Tick() {
 	return !Get().ShouldAbort;
 }
 
-inline void RS_GameInstance::Exit() {
+void RS_GameInstance::Exit() {
 
 	Get().logger->Save();
 

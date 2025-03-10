@@ -13,18 +13,21 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\Termi">
+      <UniqueIdentifier>{f5e06665-be9c-474d-a570-25c610871b86}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Enums.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="InitializePieces.h">
+    <ClInclude Include="CA_InitializePieces.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="InitializeTerminal.h">
+    <ClInclude Include="CA_InitializeTerminal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="LineBoost.h">
+    <ClInclude Include="CA_LineBoost.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RS_CommandActionManager.h">
@@ -42,7 +45,7 @@
     <ClInclude Include="RSData_Map.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GetOutput.h">
+    <ClInclude Include="CA_GetOutput.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RS_Logger.h">
@@ -51,7 +54,7 @@
     <ClInclude Include="RS_GameInstance.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Move.h">
+    <ClInclude Include="CA_Move.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -59,13 +62,13 @@
     <ClCompile Include="Entry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="InitializePieces.cpp">
+    <ClCompile Include="CA_InitializePieces.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="InitializeTerminal.cpp">
+    <ClCompile Include="CA_InitializeTerminal.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="LineBoost.cpp">
+    <ClCompile Include="CA_LineBoost.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RS_CommandActionManager.cpp">
@@ -80,7 +83,7 @@
     <ClCompile Include="RSData_Map.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GetOutput.cpp">
+    <ClCompile Include="CA_GetOutput.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RS_Logger.cpp">
@@ -89,7 +92,7 @@
     <ClCompile Include="RS_GameInstance.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Move.cpp">
+    <ClCompile Include="CA_Move.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

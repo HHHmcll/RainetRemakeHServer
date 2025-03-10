@@ -1,19 +1,24 @@
-#include "InitializeTerminal.h"
+#include "CA_InitializeTerminal.h"
 #include "Enums.h"
 #include "RSData_Map.h"
 #include "RSData_Command.h"
+#include "RS_IOManager.h"
+#include "CA_InitializePieces.h"
+
 #include <vector>
 
-CA_InitializeTerminal::CA_InitializeTerminal() {
+CA_InitializeTerminal::CA_InitializeTerminal() {}
 
+CA_InitializeTerminal* GetStaticInitializeTerminal() {
+	static CA_InitializeTerminal instance = CA_InitializeTerminal();
+	return &instance;
 }
 
-std::shared_ptr<RS_CommandAction> CA_InitializeTerminal::CreateNewObject(void* meta)
-{
-	return std::shared_ptr<RS_CommandAction>(nullptr);
+const RS_CommandAction* CreateInitializeTerminal() {
+	return GetStaticInitializeTerminal();
 }
 
-bool CA_InitializeTerminal::CanDo(RSData_Command& command, RSData_Map& map)
+bool CA_InitializeTerminal::CanDo(RSData_Command& command, RSData_Map& map) const
 {
 	if (Initialized[command.Player]){
 		return false;
@@ -39,39 +44,32 @@ bool CA_InitializeTerminal::CanDo(RSData_Command& command, RSData_Map& map)
 		}
 		Took[terminalID] = true;
 	}
-	
 	return  true;
-	
 }
 
-bool CA_InitializeTerminal::Do(RSData_Command& command, RSData_Map& map)
+bool CA_InitializeTerminal::Do(RSData_Command& command, RSData_Map& map) const
 {
 	RSData_Player player = map.getPlayer(command.Player);
 	player.Cards.clear();
 	std::vector<EActionType>* terminals = static_cast<std::vector<EActionType>*>(command.Meta.get());
 
 	for(EActionType terminal : *terminals){
-		player.Cards[terminal] = RS_CommandActionManager::GetStaticAction(terminal)->CreateNewObject(nullptr);
+		player.Cards[terminal] = dynamic_cast<const RS_TerminalCard*>(RS_CommandActionManager::GetStaticAction(terminal))->CreateNewObject(nullptr);
 	}
 
-	if(Block(nullptr,command,map) == EBlock_Status::Block || RS_CommandActionManager::GetStaticAction(EActionType::InitializeTerminal)->Block(nullptr, command,map) == EBlock_Status::Block){
+	if (GetStaticInitializeTerminal()->Initalized() && RS_CommandActionManager::GetStaticAction<CA_InitializePieces>()->Initalized()) {
 		// not yet initialized
+		struct out{
+
+		}*te = new out{};
+		RS_IOManager::QueueOutput(reinterpret_cast<uint8_t*>(te) ,sizeof(out) );
    	}
    
 	return true;
 }
 
-EBlock_Status CA_InitializeTerminal::Block(RSData_Player* owner, RSData_Command& command, RSData_Map& map)
-{
-	for (bool initialized : Initialized) {
-		if (initialized) return EBlock_Status::Block;
-	}
-	return EBlock_Status::Pass;
-}
-
-RS_CommandAction* CreateInitializeTerminal() {
-	static CA_InitializeTerminal instance = CA_InitializeTerminal();
-	return &instance;
+bool CA_InitializeTerminal::Initalized() const{
+	return Initialized[0] && Initialized[1];
 }
 
 RS_CommandActionCreateFunction createInitializeTerminalFunction = RS_CommandActionCreateFunction(EActionType::InitializeTerminal, &CreateInitializeTerminal);

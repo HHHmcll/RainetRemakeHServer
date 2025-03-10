@@ -5,23 +5,23 @@
 #include <vector>
 #include <memory>
 #include <functional>
+#include <array>
 
 #define MAP_SIZE  8 
 struct RSData_Player;
 struct RSData_Command;
 
-class RS_CommandAction;
-
-class RS_Delegate {
+class RS_TerminalCard;
+class RS_MoveDelegate {
 public:
-    RS_Delegate() = default;
-    using Lambda = std::function<void(RS_CommandAction&)>;
+    RS_MoveDelegate() = default;
+    using Lambda = std::function< std::function<void(RSData_Command&)>(RSData_Command&)>;
 
     void Add(EActionType key, Lambda func) {
         mapping[key] = func;
     }
 
-    void Execute(EActionType key, RS_CommandAction& arg) {
+    void Execute(EActionType key, RSData_Command& arg, std::function<void(RSData_Command&)> action) {
         auto func = mapping[key];
         if (func) {
             func(arg);
@@ -34,14 +34,26 @@ private:
     std::map<EActionType, Lambda> mapping;
 };
 
+struct RSData_Slot;
+
 struct RSData_Piece
 {
     RSData_Player* Player;
     EPieceType Type;
-    RSData_Piece** Slot;
-    RS_Delegate MoveCallback;
+    RSData_Slot* Slot;
 
     RSData_Piece(RSData_Player* player, EPieceType type);
+};
+
+struct RSData_Slot
+{
+    const bool bOnBoard;
+    RSData_Piece* Piece;
+    const size_t SlotID;
+private:
+    template< std::size_t... Indices>
+    friend constexpr  auto make_array_helper(std::index_sequence<Indices...>)->std::array<RSData_Slot, sizeof...(Indices)>;
+    RSData_Slot(size_t id, bool OnBoard):SlotID(id), bOnBoard(OnBoard), Piece(nullptr){}
 };
 
 struct RSData_Player
@@ -49,14 +61,15 @@ struct RSData_Player
     uint8_t PlayerID;
     uint8_t LinkAte, LinkEnter;
     uint8_t VirusAte, VirusEnter;
-    std::map<EActionType, std::shared_ptr<RS_CommandAction>> Cards;
+    std::map<EActionType, std::shared_ptr<RS_TerminalCard>> Cards;
     RSData_Piece pieces[MAP_SIZE];
-    
-    RSData_Player(uint8_t playerID);
 
+    RSData_Player(uint8_t playerID);
+    template<typename TerminalClass>
+    TerminalClass* GetTerminal();
     // will return true and stop following iterations if callback return true
     // return false otherwise
-    bool ForEachTerminal(std::function<bool(RS_CommandAction*)> callback);
+    bool ForEachTerminal(std::function<bool(RS_TerminalCard*)> callback);
 };
 
 
@@ -65,7 +78,7 @@ struct RSData_Map
 private:
 
     RSData_Player playerData[2];
-    RSData_Piece* board[MAP_SIZE * MAP_SIZE];
+    std::array<RSData_Slot, MAP_SIZE* MAP_SIZE> board;
 
     // pieces
     EGameState gameState;
@@ -79,13 +92,24 @@ public:
     RSData_Map(uint32_t maxTerminals);
     const EGameState GetGameState() const;
     void SetGameState(EGameState newState);
-    RSData_Piece** getPieceSlot(uint8_t row, uint8_t col);
+    RSData_Slot* getPieceSlot(uint8_t row, uint8_t col);
     RSData_Piece* getPiece(uint8_t row, uint8_t col);
     RSData_Player& getPlayer(bool isPlayer1);
+    const RSData_Player& getPlayer(bool isPlayer1) const;
 
-
+    bool IsTerminal(EPlayerType player, EActionType terminal,const RSData_Slot* slot) const;
     // will return true and stop following iterations if callback return true
     // return false otherwise
     bool ForEachPlayer(std::function<bool(RSData_Player*)> callback);
-    bool GetCoordFromSlot(RSData_Piece** slot, uint8_t& row, uint8_t& col);
+    bool GetCoordFromSlot(RSData_Slot* slot, uint8_t& row, uint8_t& col);
+    bool CheckPlayerType(EPlayerType playerType) const;
 };
+
+template<typename TerminalClass>
+TerminalClass* RSData_Player::GetTerminal() {
+    static_assert(has_static_member<TerminalClass>::value);
+    if (!Cards.contains(TerminalClass::StaticType)) {
+        return nullptr;
+    }
+    return dynamic_cast<TerminalClass*>(Cards.at(TerminalClass::StaticType).get());
+}

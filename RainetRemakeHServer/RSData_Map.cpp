@@ -1,6 +1,7 @@
 #include "RSData_Map.h"
 
 #include "RS_CommandActionManager.h"
+#include <utility>
 
 RSData_Piece::RSData_Piece(RSData_Player* player, EPieceType type):
 	Player(player), Type(type), Slot(nullptr)
@@ -14,7 +15,7 @@ RSData_Player::RSData_Player(uint8_t playerID) :
 		RSData_Piece(this,EPieceType::Unknown), RSData_Piece(this,EPieceType::Unknown) }
 {}
 
-bool RSData_Player::ForEachTerminal(std::function<bool(RS_CommandAction*)> callback)
+bool RSData_Player::ForEachTerminal(std::function<bool(RS_TerminalCard*)> callback)
 {
 	for (auto terminal : Cards)
 	{
@@ -25,10 +26,17 @@ bool RSData_Player::ForEachTerminal(std::function<bool(RS_CommandAction*)> callb
 	return false;
 }
 
+
+template< std::size_t... Indices>
+constexpr auto make_array_helper(std::index_sequence<Indices...>)->std::array<RSData_Slot, sizeof...(Indices)>
+{
+	return { { RSData_Slot(Indices, false) ... } };
+}
+
 RSData_Map::RSData_Map(uint32_t maxTerminals)
 	:playerData{RSData_Player(0),RSData_Player(1)},
-	board{0}, 
 	gameState(EGameState::Initialization),
+	board(make_array_helper(std::make_index_sequence<MAP_SIZE* MAP_SIZE>{})),
 	MaxTerminals(maxTerminals)
 {
 
@@ -54,9 +62,9 @@ RSData_Map::RSData_Map(uint32_t maxTerminals)
 	};
 
 	for (int i = 0; i < MAP_SIZE; i++) {
-		board[player1Coord[i]] = &playerData[0].pieces[i];
+		board[player1Coord[i]].Piece = &playerData[0].pieces[i];
 		playerData[0].pieces[i].Slot = &board[player1Coord[i]];
-		board[player2Coord[i]] = &playerData[1].pieces[i];
+		board[player2Coord[i]].Piece = &playerData[1].pieces[i];
 		playerData[1].pieces[i].Slot = &board[player1Coord[i]];
 	}
 }
@@ -64,9 +72,9 @@ RSData_Map::RSData_Map(uint32_t maxTerminals)
 
 RSData_Piece* RSData_Map::getPiece(uint8_t row, uint8_t col)
 {
-	return *getPieceSlot(row,col);
+	return getPieceSlot(row,col)->Piece;
 }
-RSData_Piece** RSData_Map::getPieceSlot (uint8_t row, uint8_t col)
+RSData_Slot* RSData_Map::getPieceSlot (uint8_t row, uint8_t col)
 {
 	if (row < 0 || row >= MAP_SIZE) return nullptr;
 	if (col < 0 || col >= MAP_SIZE) return nullptr;
@@ -76,6 +84,16 @@ RSData_Piece** RSData_Map::getPieceSlot (uint8_t row, uint8_t col)
 RSData_Player& RSData_Map::getPlayer(bool isPlayer1)
 {
 	return playerData[!isPlayer1] ;
+}
+
+const RSData_Player& RSData_Map::getPlayer(bool isPlayer1) const
+{
+	return playerData[!isPlayer1];
+}
+
+bool RSData_Map::IsTerminal(EPlayerType player, const EActionType terminal, const RSData_Slot* slot) const
+{
+	return getPlayer(player == EPlayerType::Player1).Cards.at(terminal)->Is(slot);
 }
 
 bool RSData_Map::ForEachPlayer(std::function<bool(RSData_Player*)> callback)
@@ -97,12 +115,31 @@ void RSData_Map::SetGameState(EGameState newState){
 	gameState = newState;
 }
 
-bool RSData_Map::GetCoordFromSlot(RSData_Piece** slot, uint8_t& row, uint8_t& col)
+bool RSData_Map::GetCoordFromSlot(RSData_Slot* slot, uint8_t& row, uint8_t& col)
 {
-	int id = board - slot;
+	if(!slot->bOnBoard){
+		return false;
+	}
+	int id = slot->SlotID;
 
 	if (id < 0 || id >= MAP_SIZE * MAP_SIZE) return false;
 	row = id / MAP_SIZE;
 	col = id % MAP_SIZE;
+	return true;
+}
+
+bool RSData_Map::CheckPlayerType(EPlayerType playerType) const
+{
+
+	if (playerType > EPlayerType::Player2) {
+		return false;
+	}
+	if (gameState == EGameState::WaitingPlayer1 && playerType != Player1) {
+		return false;
+	}
+	else if (gameState == EGameState::WaitingPlayer2 && playerType != Player2) {
+		return false;
+	}
+
 	return true;
 }

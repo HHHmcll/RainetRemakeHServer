@@ -3,7 +3,7 @@
 
 CreateActionFunction RS_CommandActionManager::AllStaticActions[EActionType::Num] = {};
 
-RS_CommandAction* RS_CommandActionManager::GetStaticAction(EActionType actionType)
+const RS_CommandAction* RS_CommandActionManager::GetStaticAction(EActionType actionType)
 {
 	auto createFunction = AllStaticActions[unsigned long long(actionType)];
 	if (createFunction){
