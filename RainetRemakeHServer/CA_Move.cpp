@@ -5,7 +5,7 @@
 
 CA_Move::CA_Move(){}
 
-bool CA_Move::CanDo(RSData_Command& command, RSData_Map& map) const
+bool CA_Move::CanDo(const RSData_Command& command, const RSData_Map& map) const
 {
 
 

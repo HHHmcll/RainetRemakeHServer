@@ -12,18 +12,18 @@ std::shared_ptr<RS_TerminalCard> CA_LineBoost::CreateNewObject(void* meta) const
 }
 
 
-bool CA_LineBoost::CanDo(RSData_Command& command, RSData_Map& map) const
+bool CA_LineBoost::CanDo(const RSData_Command& command, const RSData_Map& map) const
 {
 	if (!map.CheckPlayerType(command.Player)) {
 		return false;
 	}
 
-	RSData_Player& playerRef = map.getPlayer(command.Player == EPlayerType::Player1);
-	CA_LineBoost* card = playerRef.GetTerminal<CA_LineBoost>();
+	const RSData_Player& playerRef = map.getPlayer(command.Player == EPlayerType::Player1);
+	const CA_LineBoost* card = playerRef.GetTerminal<CA_LineBoost>();
 	if (!card) {
 		return false;
 	}
-	RSData_Slot* commandSlot = map.getPieceSlot(command.Data.Coordinate.row1, command.Data.Coordinate.col1);
+	const RSData_Slot* commandSlot = map.getPieceSlot(command.Data.Coordinate.row1, command.Data.Coordinate.col1);
 	if (!commandSlot) {
 		return false;
 	}
@@ -31,7 +31,7 @@ bool CA_LineBoost::CanDo(RSData_Command& command, RSData_Map& map) const
 		return false;
 	}
 
-	RSData_Piece*& commandPiece = card->InstalledPiece;
+	 RSData_Piece* const& commandPiece = card->InstalledPiece;
 	if (commandPiece) {
 
 		if (commandSlot->Piece != commandPiece) {
@@ -39,7 +39,7 @@ bool CA_LineBoost::CanDo(RSData_Command& command, RSData_Map& map) const
 		}
 	}
 	else {
-		RSData_Piece* piece = map.getPiece(command.Data.Coordinate.row1, command.Data.Coordinate.col1);
+		RSData_Piece* piece = commandSlot->Piece;
 		if (!piece || piece->Player->PlayerID != command.Player) {
 			return false;
 		}

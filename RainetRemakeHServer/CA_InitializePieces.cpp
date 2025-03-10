@@ -16,7 +16,7 @@ const RS_CommandAction* GetStaticInitializePiecesConstWrapper() {
 
 CA_InitializePieces::CA_InitializePieces() {}
 
-bool CA_InitializePieces::CanDo(RSData_Command& command, RSData_Map& map) const
+bool CA_InitializePieces::CanDo(const RSData_Command& command, const RSData_Map& map) const
 {
 	if (Initialized[command.Player]){
 		return false;

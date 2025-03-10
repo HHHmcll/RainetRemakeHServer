@@ -45,6 +45,8 @@ struct RSData_Player
     RSData_Player(uint8_t playerID);
     template<typename TerminalClass>
     TerminalClass* GetTerminal();
+    template<typename TerminalClass>
+    const TerminalClass* GetTerminal() const;
     // will return true and stop following iterations if callback return true
     // return false otherwise
     bool ForEachTerminal(std::function<bool(RS_TerminalCard*)> callback);
@@ -72,6 +74,8 @@ public:
     void SetGameState(EGameState newState);
     RSData_Slot* getPieceSlot(uint8_t row, uint8_t col);
     RSData_Piece* getPiece(uint8_t row, uint8_t col);
+    const RSData_Slot* getPieceSlot(uint8_t row, uint8_t col)const;
+    const RSData_Piece* getPiece(uint8_t row, uint8_t col)const;
     RSData_Player& getPlayer(bool isPlayer1);
     const RSData_Player& getPlayer(bool isPlayer1) const;
 
@@ -85,6 +89,15 @@ public:
 
 template<typename TerminalClass>
 TerminalClass* RSData_Player::GetTerminal() {
+    static_assert(has_static_member<TerminalClass>::value);
+    if (!Cards.contains(TerminalClass::StaticType)) {
+        return nullptr;
+    }
+    return dynamic_cast<TerminalClass*>(Cards.at(TerminalClass::StaticType).get());
+}
+
+template<typename TerminalClass>
+const TerminalClass* RSData_Player::GetTerminal() const {
     static_assert(has_static_member<TerminalClass>::value);
     if (!Cards.contains(TerminalClass::StaticType)) {
         return nullptr;

@@ -10,7 +10,7 @@ private:
 	friend const RS_CommandAction* GetStaticMove();
 public:
 	static const EActionType StaticType = EActionType::Move;
-	bool CanDo(RSData_Command& command, RSData_Map& map) const override;
+	bool CanDo(const RSData_Command& command, const RSData_Map& map) const override;
 	bool Do(RSData_Command& command, RSData_Map& map) const override;
 };
 

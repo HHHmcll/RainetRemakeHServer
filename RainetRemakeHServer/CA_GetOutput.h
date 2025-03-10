@@ -8,7 +8,7 @@ private:
 	CA_GetOutput() = default;
 	friend const RS_CommandAction* GetStaticGetOutput();
 public:
-	bool CanDo(RSData_Command& command, RSData_Map& map) const override;
+	bool CanDo(const RSData_Command& command, const RSData_Map& map) const override;
 	bool Do(RSData_Command& command, RSData_Map& map)const override;
 
 };

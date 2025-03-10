@@ -19,7 +19,7 @@ public:
 	// Called directly before Do. Will not call Do if returned false;
 	// Note that this will be called from CreateAction()
 	// NOT THE INSTANCE STORED IN RSData_Map
-	virtual bool CanDo(RSData_Command& command, RSData_Map& map) const = 0;
+	virtual bool CanDo(const RSData_Command& command, const RSData_Map& map) const = 0;
 	// Called if CanDo is true
 	// Note that this will be called from CreateAction()
 	// NOT THE INSTANCE STORED IN RSData_Map

@@ -81,6 +81,17 @@ RSData_Slot* RSData_Map::getPieceSlot (uint8_t row, uint8_t col)
 	return &board[CoordToID(row,col)];
 }
 
+const RSData_Piece* RSData_Map::getPiece(uint8_t row, uint8_t col) const
+{
+	return getPieceSlot(row, col)->Piece;
+}
+const RSData_Slot* RSData_Map::getPieceSlot(uint8_t row, uint8_t col) const
+{
+	if (row < 0 || row >= MAP_SIZE) return nullptr;
+	if (col < 0 || col >= MAP_SIZE) return nullptr;
+	return &board[CoordToID(row, col)];
+}
+
 RSData_Player& RSData_Map::getPlayer(bool isPlayer1)
 {
 	return playerData[!isPlayer1] ;

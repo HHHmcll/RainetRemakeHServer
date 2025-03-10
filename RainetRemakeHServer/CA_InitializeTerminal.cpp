@@ -18,7 +18,7 @@ const RS_CommandAction* CreateInitializeTerminal() {
 	return GetStaticInitializeTerminal();
 }
 
-bool CA_InitializeTerminal::CanDo(RSData_Command& command, RSData_Map& map) const
+bool CA_InitializeTerminal::CanDo(const RSData_Command& command, const RSData_Map& map) const
 {
 	if (Initialized[command.Player]){
 		return false;

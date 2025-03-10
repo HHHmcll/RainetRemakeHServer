@@ -6,7 +6,7 @@ const RS_CommandAction* GetStaticGetOutput()
 	return &instance;
 }
 
-bool CA_GetOutput::CanDo(RSData_Command& command, RSData_Map& map) const
+bool CA_GetOutput::CanDo(const RSData_Command& command, const RSData_Map& map) const
 {
 	return true;
 }
