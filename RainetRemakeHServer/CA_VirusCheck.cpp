@@ -4,7 +4,7 @@
 #include "RSData_Command.h"
 
 CA_VirusCheck::CA_VirusCheck() :
-	InstalledPiece(nullptr), used(false){}
+	used(false){}
 
 std::shared_ptr<RS_TerminalCard> CA_VirusCheck::CreateNewObject(void* meta) const
 {
@@ -18,14 +18,14 @@ bool CA_VirusCheck::CanDo(const RSData_Command& command,const RSData_Map& map) c
 		return false;
 	}
 
-	RSData_Player& playerRef = map.getPlayer(command.Player == EPlayerType::Player1);
-	CA_VirusCheck* card = playerRef.GetTerminal<CA_VirusCheck>();
+	const RSData_Player& playerRef = map.getPlayer(command.Player == EPlayerType::Player1);
+	const CA_VirusCheck* card = playerRef.GetTerminal<CA_VirusCheck>();
 
 	if (!card || card->used) {
 		return false;
 	}
 
-	RSData_Slot* commandSlot = map.getPieceSlot(command.Data.Coordinate.row1, command.Data.Coordinate.col1);
+	const RSData_Slot* commandSlot = map.getPieceSlot(command.Data.Coordinate.row1, command.Data.Coordinate.col1);
 	if (!commandSlot) {
 		return false;
 	}
@@ -43,19 +43,12 @@ bool CA_VirusCheck::CanDo(const RSData_Command& command,const RSData_Map& map) c
 
 bool CA_VirusCheck::Do(RSData_Command& command, RSData_Map& map) const
 {
-	used = true;
 	CA_VirusCheck* card = map.getPlayer(command.Player == EPlayerType::Player1).GetTerminal<CA_VirusCheck>();
-	if (card) {
-		return false;
-	}
-	RSData_Piece*& commandPiece = card->InstalledPiece;
 
-	if (commandPiece) {
-		commandPiece = nullptr;
-	}
-	else {
-		commandPiece = map.getPiece(command.Data.Coordinate.row1, command.Data.Coordinate.col1);
-	}
+	card->used = true;
+
+	map.getPiece(command.Data.Coordinate.row1, command.Data.Coordinate.col1)->revealed = true;
+
 	return true;
 
 }
@@ -63,7 +56,7 @@ bool CA_VirusCheck::Do(RSData_Command& command, RSData_Map& map) const
 
 bool CA_VirusCheck::Is(const RSData_Slot* slot) const
 {
-	return slot && InstalledPiece && slot->Piece == InstalledPiece;
+	return false;
 }
 
 const RS_CommandAction* GetStaticVirusCheck() {

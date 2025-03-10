@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\Termi">
-      <UniqueIdentifier>{f5e06665-be9c-474d-a570-25c610871b86}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Enums.h">
@@ -57,6 +54,9 @@
     <ClInclude Include="CA_Move.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CA_VirusCheck.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entry.cpp">
@@ -93,6 +93,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CA_Move.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CA_VirusCheck.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
