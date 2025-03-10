@@ -9,30 +9,8 @@
 
 #define MAP_SIZE  8 
 struct RSData_Player;
-struct RSData_Command;
 
 class RS_TerminalCard;
-class RS_MoveDelegate {
-public:
-    RS_MoveDelegate() = default;
-    using Lambda = std::function< std::function<void(RSData_Command&)>(RSData_Command&)>;
-
-    void Add(EActionType key, Lambda func) {
-        mapping[key] = func;
-    }
-
-    void Execute(EActionType key, RSData_Command& arg, std::function<void(RSData_Command&)> action) {
-        auto func = mapping[key];
-        if (func) {
-            func(arg);
-        }
-    }
-    void Remove(EActionType key) {
-        mapping.erase(key);
-    }
-private:
-    std::map<EActionType, Lambda> mapping;
-};
 
 struct RSData_Slot;
 
@@ -41,7 +19,7 @@ struct RSData_Piece
     RSData_Player* Player;
     EPieceType Type;
     RSData_Slot* Slot;
-
+    bool revealed;
     RSData_Piece(RSData_Player* player, EPieceType type);
 };
 

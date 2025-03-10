@@ -3,8 +3,8 @@
 #include "RS_CommandActionManager.h"
 #include <utility>
 
-RSData_Piece::RSData_Piece(RSData_Player* player, EPieceType type):
-	Player(player), Type(type), Slot(nullptr)
+RSData_Piece::RSData_Piece(RSData_Player* player, EPieceType type) :
+	Player(player), Type(type), Slot(nullptr), revealed(false)
 {}
 
 RSData_Player::RSData_Player(uint8_t playerID) :
