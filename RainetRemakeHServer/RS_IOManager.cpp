@@ -66,7 +66,7 @@ void RS_IOManager::FetchCommand(RSData_Command& command)
     case EActionType::FireWall:
     case EActionType::VirusCheck:
     case EActionType::NotFound:
-    case EActionType::Rabbit:
+    case EActionType::RabbitTrap:
     case EActionType::ZeroDayAttack:
     case EActionType::SandBox:
     {

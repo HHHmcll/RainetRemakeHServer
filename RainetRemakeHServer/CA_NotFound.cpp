@@ -3,7 +3,7 @@
 #include "RSData_Map.h"
 #include "RSData_Command.h"
 
-CA_NotFound::CA_NotFound() {}
+CA_NotFound::CA_NotFound():used(false) {}
 
 std::shared_ptr<RS_TerminalCard> CA_NotFound::CreateNewObject(void* meta) const
 {
@@ -59,7 +59,7 @@ bool CA_NotFound::Do(RSData_Command& command, RSData_Map& map) const
 {
 	RSData_Player& playerRef = map.getPlayer(command.Player == EPlayerType::Player1);
 	CA_NotFound* card = playerRef.GetTerminal<CA_NotFound>();
-	card->used = used;
+	card->used = true;
 	RSData_Slot* commandSlotFrom = map.getPieceSlot(abs(command.Data.Coordinate.row1), abs(command.Data.Coordinate.col1));
 	RSData_Slot* commandSlotTo = map.getPieceSlot(abs(command.Data.Coordinate.row2), abs(command.Data.Coordinate.col2));
 	commandSlotFrom->Piece->revealed = false;
@@ -67,9 +67,9 @@ bool CA_NotFound::Do(RSData_Command& command, RSData_Map& map) const
 	if (command.Data.Coordinate.row1 < 0 || command.Data.Coordinate.row2 < 0 || command.Data.Coordinate.col1 < 0 || command.Data.Coordinate.col2 < 0) {
 		return true;
 	}
-	EPieceType temp = commandSlotTo->Piece->Type;
-	commandSlotTo->Piece->Type = commandSlotFrom->Piece->Type;
-	commandSlotFrom->Piece->Type = temp;
+	RSData_Piece* temp = commandSlotTo->Piece;
+	commandSlotTo->Piece = commandSlotFrom->Piece;
+	commandSlotFrom->Piece = temp;
 
 	return true;
 

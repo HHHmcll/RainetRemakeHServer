@@ -33,7 +33,7 @@ enum EActionType : uint8_t {
 	FireWall,
 	VirusCheck,
 	NotFound,
-	Rabbit,
+	RabbitTrap,
 	ZeroDayAttack,
 	SandBox,
 

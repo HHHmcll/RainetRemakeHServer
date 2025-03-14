@@ -37,7 +37,7 @@ constexpr const char* ActionTypeToString(const EActionType type){
             return "VirusCheck";
         case EActionType::NotFound:
             return "NotFound";
-        case EActionType::Rabbit:
+        case EActionType::RabbitTrap:
             return "Rabbit";
         case EActionType::ZeroDayAttack:
             return "ZeroDayAttack";
@@ -114,7 +114,7 @@ void RS_Logger::Save()
         case EActionType::FireWall:
         case EActionType::VirusCheck:
         case EActionType::NotFound:
-        case EActionType::Rabbit:
+        case EActionType::RabbitTrap:
         case EActionType::ZeroDayAttack:
         case EActionType::SandBox:
             logFile << PlayerTypeToString(Data.Player) << "\t" << ActionTypeToString(Data.ActionType) << "\t";

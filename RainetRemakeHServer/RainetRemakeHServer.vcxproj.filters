@@ -60,6 +60,15 @@
     <ClInclude Include="CA_NotFound.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CA_ZeroDayAttack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CA_RabbitTrap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CA_SandBox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entry.cpp">
@@ -102,6 +111,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CA_NotFound.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CA_ZeroDayAttack.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CA_RabbitTrap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CA_SandBox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

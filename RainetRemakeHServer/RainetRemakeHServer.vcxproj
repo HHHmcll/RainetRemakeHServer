@@ -20,7 +20,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CA_NotFound.h" />
+    <ClInclude Include="CA_RabbitTrap.h" />
+    <ClInclude Include="CA_SandBox.h" />
     <ClInclude Include="CA_VirusCheck.h" />
+    <ClInclude Include="CA_ZeroDayAttack.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="CA_GetOutput.h" />
     <ClInclude Include="CA_InitializePieces.h" />
@@ -37,7 +40,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CA_NotFound.cpp" />
+    <ClCompile Include="CA_RabbitTrap.cpp" />
+    <ClCompile Include="CA_SandBox.cpp" />
     <ClCompile Include="CA_VirusCheck.cpp" />
+    <ClCompile Include="CA_ZeroDayAttack.cpp" />
     <ClCompile Include="Entry.cpp" />
     <ClCompile Include="CA_GetOutput.cpp" />
     <ClCompile Include="CA_InitializePieces.cpp" />
