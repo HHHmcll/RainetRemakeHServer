@@ -5,6 +5,9 @@ CreateActionFunction RS_CommandActionManager::AllStaticActions[EActionType::Num]
 
 const RS_CommandAction* RS_CommandActionManager::GetStaticAction(EActionType actionType)
 {
+	if(actionType >= EActionType::Num){
+		return nullptr;
+	}
 	auto createFunction = AllStaticActions[unsigned long long(actionType)];
 	if (createFunction){
 		return createFunction();

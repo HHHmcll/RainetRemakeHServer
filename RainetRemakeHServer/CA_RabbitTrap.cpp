@@ -28,7 +28,7 @@ bool CA_RabbitTrap::CanDo(const RSData_Command& command, const RSData_Map& map) 
 
 	const RSData_Slot* commandSlot = map.getPieceSlot(command.Data.Coordinate.row1, command.Data.Coordinate.col1);
 	// slot on board;
-	if (!commandSlot) {
+	if (!commandSlot || !commandSlot->bOnBoard) {
 		return false;
 	}
 	// is my piece
@@ -36,7 +36,7 @@ bool CA_RabbitTrap::CanDo(const RSData_Command& command, const RSData_Map& map) 
 		return false;
 	}
 
-	if(map.IsTerminal(EPlayerType(1 - commandSlot->Piece->Player->PlayerID), EActionType::RabbitTrap, commandSlot)){
+	if(map.IsTerminal(EActionType::RabbitTrap, commandSlot) == EPlayerType(1 - commandSlot->Piece->Player->PlayerID)){
 		return false;
 	}
 
@@ -51,13 +51,12 @@ bool CA_RabbitTrap::Do(RSData_Command& command, RSData_Map& map) const
 	card->TrappedSlot = map.getPieceSlot(command.Data.Coordinate.row1, command.Data.Coordinate.col1);
 
 	return true;
-
 }
 
 
 bool CA_RabbitTrap::Is(const RSData_Slot* slot) const
 {
-	return false;
+	return TrappedSlot == slot;
 }
 
 const RS_CommandAction* GetStaticRabbitTrap() {

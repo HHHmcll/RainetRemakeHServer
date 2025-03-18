@@ -26,10 +26,10 @@ bool CA_VirusCheck::CanDo(const RSData_Command& command,const RSData_Map& map) c
 	}
 
 	const RSData_Slot* commandSlot = map.getPieceSlot(command.Data.Coordinate.row1, command.Data.Coordinate.col1);
-	if (!commandSlot) {
+	if (!commandSlot || !commandSlot->bOnBoard) {
 		return false;
 	}
-	if(map.IsTerminal(EPlayerType::Player1, EActionType::SandBox, commandSlot) || map.IsTerminal(EPlayerType::Player2, EActionType::SandBox, commandSlot)){
+	if(map.IsTerminal(EActionType::SandBox, commandSlot) != EPlayerType::Empty){
 		return false;
 	}
 

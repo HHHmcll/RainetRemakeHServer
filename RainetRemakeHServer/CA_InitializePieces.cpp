@@ -41,10 +41,7 @@ bool CA_InitializePieces::Do(RSData_Command& command, RSData_Map& map) const
 	}
 	GetStaticInitializePieces()->Initialized[command.Player] = true;
 
-	if(GetStaticInitializePieces()->Initalized() && RS_CommandActionManager::GetStaticAction<CA_InitializeTerminal>()->Initalized()){
- 		// not yet initialized
-	}
-
+	
 	return true;
 }
 

@@ -100,6 +100,9 @@ void RS_IOManager::Unhold()
 void RS_IOManager::ResolveOutput()
 {
     if (!GetInstance().HoldFlag) {
+        if(GetInstance().OutputQueue.empty()){
+            return;
+        }
         auto& data = GetInstance().OutputQueue.front();
         GetInstance().WriteData(data.data, data.dataSize);
         GetInstance().OutputQueue.pop();

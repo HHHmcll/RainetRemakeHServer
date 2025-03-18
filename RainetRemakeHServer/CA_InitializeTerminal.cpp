@@ -14,7 +14,7 @@ CA_InitializeTerminal* GetStaticInitializeTerminal() {
 	return &instance;
 }
 
-const RS_CommandAction* CreateInitializeTerminal() {
+const RS_CommandAction* GetStaticInitializeTerminalConstWrapper() {
 	return GetStaticInitializeTerminal();
 }
 
@@ -56,15 +56,7 @@ bool CA_InitializeTerminal::Do(RSData_Command& command, RSData_Map& map) const
 	for(EActionType terminal : *terminals){
 		player.Cards[terminal] = dynamic_cast<const RS_TerminalCard*>(RS_CommandActionManager::GetStaticAction(terminal))->CreateNewObject(nullptr);
 	}
-
-	if (GetStaticInitializeTerminal()->Initalized() && RS_CommandActionManager::GetStaticAction<CA_InitializePieces>()->Initalized()) {
-		// not yet initialized
-		struct out{
-
-		}*te = new out{};
-		RS_IOManager::QueueOutput(reinterpret_cast<uint8_t*>(te) ,sizeof(out) );
-   	}
-   
+	
 	return true;
 }
 
@@ -72,4 +64,4 @@ bool CA_InitializeTerminal::Initalized() const{
 	return Initialized[0] && Initialized[1];
 }
 
-RS_CommandActionCreateFunction createInitializeTerminalFunction = RS_CommandActionCreateFunction(EActionType::InitializeTerminal, &CreateInitializeTerminal);
+RS_CommandActionCreateFunction createInitializeTerminalFunction = RS_CommandActionCreateFunction(EActionType::InitializeTerminal, &GetStaticInitializeTerminalConstWrapper);

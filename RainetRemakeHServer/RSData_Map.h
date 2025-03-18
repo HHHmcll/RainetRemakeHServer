@@ -13,13 +13,42 @@ struct RSData_Player;
 class RS_TerminalCard;
 
 struct RSData_Slot;
+struct RSData_Command;
+
+class RS_Delegate {
+    public:
+        RS_Delegate() = default;
+        using Lambda = std::function<void(RSData_Command&)>;
+    
+        void Add(EActionType key, Lambda func) {
+            mapping[key] = func;
+        }
+        void BroadCast(RSData_Command& arg){
+            for(auto& func : mapping){
+                func.second(arg);
+            }
+        }
+        void Execute(EActionType key, RSData_Command& arg) {
+            auto func = mapping[key];
+            if (func) {
+                func(arg);
+            }
+        }
+        void Remove(EActionType key) {
+            mapping.erase(key);
+        }
+    private:
+        std::map<EActionType, Lambda> mapping;
+};
 
 struct RSData_Piece
 {
     RSData_Player* Player;
     EPieceType Type;
     RSData_Slot* Slot;
+
     bool revealed;
+    RS_Delegate OnPieceRemovedFromBoard;
     RSData_Piece(RSData_Player* player, EPieceType type);
 };
 
@@ -29,19 +58,21 @@ struct RSData_Slot
     RSData_Piece* Piece;
     const size_t SlotID;
 private:
+    friend struct RSData_Map;
     template< std::size_t... Indices>
-    friend constexpr  auto make_array_helper(std::index_sequence<Indices...>)->std::array<RSData_Slot, sizeof...(Indices)>;
+    friend constexpr  auto make_array_helper(std::index_sequence<Indices...>, bool isOnBoard)->std::array<RSData_Slot, sizeof...(Indices)>;
     RSData_Slot(size_t id, bool OnBoard):SlotID(id), bOnBoard(OnBoard), Piece(nullptr){}
 };
 
 struct RSData_Player
 {
     uint8_t PlayerID;
-    uint8_t LinkAte, LinkEnter;
-    uint8_t VirusAte, VirusEnter;
+    uint8_t AteCount[2], EnterCount[2];
+    
     std::map<EActionType, std::shared_ptr<RS_TerminalCard>> Cards;
     RSData_Piece pieces[MAP_SIZE];
-
+    std::vector<RSData_Piece*> ServerSlots;
+    std::vector<RSData_Piece*> CaptureSlot[2];
     RSData_Player(uint8_t playerID);
     template<typename TerminalClass>
     TerminalClass* GetTerminal();
@@ -59,7 +90,7 @@ private:
 
     RSData_Player playerData[2];
     std::array<RSData_Slot, MAP_SIZE* MAP_SIZE> board;
-
+    RSData_Slot ExitToServerSlot[2];
     // pieces
     EGameState gameState;
     static constexpr inline int CoordToID(uint8_t row, uint8_t col)  {
@@ -79,7 +110,7 @@ public:
     RSData_Player& getPlayer(bool isPlayer1);
     const RSData_Player& getPlayer(bool isPlayer1) const;
 
-    bool IsTerminal(EPlayerType player, EActionType terminal,const RSData_Slot* slot) const;
+    EPlayerType IsTerminal(EActionType terminal,const RSData_Slot* slot) const;
     // will return true and stop following iterations if callback return true
     // return false otherwise
     bool ForEachPlayer(std::function<bool(RSData_Player*)> callback);

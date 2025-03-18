@@ -27,12 +27,12 @@ bool CA_NotFound::CanDo(const RSData_Command& command, const RSData_Map& map) co
 	}
 
 	const RSData_Slot* commandSlotFrom = map.getPieceSlot(abs(command.Data.Coordinate.row1), abs(command.Data.Coordinate.col1));
-	if (!commandSlotFrom) {
+	if (!commandSlotFrom || !commandSlotFrom->bOnBoard) {
 		return false;
 	}
 
 	const RSData_Slot* commandSlotTo = map.getPieceSlot(abs(command.Data.Coordinate.row2), abs(command.Data.Coordinate.col2));
-	if (!commandSlotTo) {
+	if (!commandSlotTo || !commandSlotTo->bOnBoard) {
 		return false;
 	}
 
@@ -44,11 +44,11 @@ bool CA_NotFound::CanDo(const RSData_Command& command, const RSData_Map& map) co
 		return false;
 	}
 
-	if(map.IsTerminal(EPlayerType::Player1, EActionType::SandBox, commandSlotFrom) || map.IsTerminal(EPlayerType::Player2, EActionType::SandBox, commandSlotFrom)){
+	if(map.IsTerminal(EActionType::SandBox, commandSlotFrom) != EPlayerType::Empty){
 		return false;
 	}
 
-	if (map.IsTerminal(EPlayerType::Player1, EActionType::SandBox, commandSlotTo) || map.IsTerminal(EPlayerType::Player2, EActionType::SandBox, commandSlotTo)) {
+	if (map.IsTerminal(EActionType::SandBox, commandSlotTo) != EPlayerType::Empty) {
 		return false;
 	}
 
@@ -70,7 +70,8 @@ bool CA_NotFound::Do(RSData_Command& command, RSData_Map& map) const
 	RSData_Piece* temp = commandSlotTo->Piece;
 	commandSlotTo->Piece = commandSlotFrom->Piece;
 	commandSlotFrom->Piece = temp;
-
+	commandSlotFrom->Piece->Slot = commandSlotFrom;
+	commandSlotTo->Piece->Slot = commandSlotTo;
 	return true;
 
 }

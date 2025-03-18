@@ -3,16 +3,15 @@
 
 struct RSData_Piece;
 
-class CA_SandBox :public RS_TerminalCard {
+class CA_FireWall :public RS_TerminalCard {
 private:
-	CA_SandBox();
-	friend const RS_CommandAction* GetStaticSandBox();
-	bool used;
-
-
+	CA_FireWall();
+	friend const RS_CommandAction* GetStaticFireWall();
+	
 public:
-	RSData_Piece* TrappedPiece;
-	static const EActionType StaticType = EActionType::SandBox;
+
+	RSData_Slot* TrappedSlot;
+	static const EActionType StaticType = EActionType::FireWall;
 	std::shared_ptr<RS_TerminalCard> CreateNewObject(void* meta) const override;
 	bool CanDo(const RSData_Command& command, const RSData_Map& map) const override;
 	bool Do(RSData_Command& command, RSData_Map& map) const override;

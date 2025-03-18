@@ -3,7 +3,7 @@
 #include "RSData_Map.h"
 #include "RSData_Command.h"
 
-CA_SandBox::CA_SandBox():TrappedSlot(nullptr), used(false){}
+CA_SandBox::CA_SandBox():TrappedPiece(nullptr), used(false){}
 
 std::shared_ptr<RS_TerminalCard> CA_SandBox::CreateNewObject(void* meta) const
 {
@@ -28,7 +28,7 @@ bool CA_SandBox::CanDo(const RSData_Command& command, const RSData_Map& map) con
 
 	const RSData_Slot* commandSlot = map.getPieceSlot(command.Data.Coordinate.row1, command.Data.Coordinate.col1);
 	// slot on board;
-	if (!commandSlot) {
+	if (!commandSlot || !commandSlot->bOnBoard) {
 		return false;
 	}
 	// is my piece
@@ -36,7 +36,7 @@ bool CA_SandBox::CanDo(const RSData_Command& command, const RSData_Map& map) con
 		return false;
 	}
 
-	if(map.IsTerminal(EPlayerType(1 - commandSlot->Piece->Player->PlayerID), EActionType::SandBox, commandSlot)){
+	if(map.IsTerminal(EActionType::SandBox, commandSlot)!= EPlayerType::Empty){
 		return false;
 	}
 
@@ -48,8 +48,11 @@ bool CA_SandBox::Do(RSData_Command& command, RSData_Map& map) const
 	RSData_Player& playerRef = map.getPlayer(command.Player == EPlayerType::Player1);
 	CA_SandBox* card = playerRef.GetTerminal<CA_SandBox>();
 	card->used = true;
-	card->TrappedSlot = map.getPieceSlot(command.Data.Coordinate.row1, command.Data.Coordinate.col1);
+	card->TrappedPiece = map.getPiece(command.Data.Coordinate.row1, command.Data.Coordinate.col1);
 
+	card->TrappedPiece->OnPieceRemovedFromBoard.Add(StaticType,[&](RSData_Command& command){
+		card->TrappedPiece = nullptr;
+	});
 	return true;
 
 }

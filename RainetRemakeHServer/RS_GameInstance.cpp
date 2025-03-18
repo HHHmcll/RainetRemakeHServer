@@ -23,7 +23,7 @@ RS_GameInstance& RS_GameInstance::Get() {
 
 void RS_GameInstance::Init(int argc, char* argv[]) {
 
-	Get().mapData = new RSData_Map(4);
+	Get().mapData = new RSData_Map(5);
 	Get().logger = new RS_Logger("./out.txt");
 	// Parse Args
 	// Create new Map
