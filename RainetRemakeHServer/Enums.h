@@ -25,6 +25,7 @@ enum EActionType : uint8_t {
 	InitializeTerminal,
 	InitializePieces,
 	VisualEffet,
+	End,
 	Error,
 
 	Move,
@@ -45,7 +46,7 @@ enum EGameState : uint8_t{
 	Initialization,
 	WaitingPlayer1,
 	WaitingPlayer2,
-	End
+	EndGame
 };
 
 template <typename T>

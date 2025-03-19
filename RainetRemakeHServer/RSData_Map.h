@@ -116,6 +116,8 @@ public:
     bool ForEachPlayer(std::function<bool(RSData_Player*)> callback);
     bool GetCoordFromSlot(RSData_Slot* slot, uint8_t& row, uint8_t& col);
     bool CheckPlayerType(EPlayerType playerType) const;
+    // Game End if true;
+    bool EndRoundCheck();
 };
 
 template<typename TerminalClass>

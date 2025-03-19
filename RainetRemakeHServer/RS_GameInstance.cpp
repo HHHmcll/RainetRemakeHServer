@@ -36,7 +36,7 @@ bool RS_GameInstance::Tick() {
 	if (!RS_IOManager::HasCommand()) {
 		if (RS_IOManager::ShouldResolve()) {
 			RS_IOManager::ResolveOutput();
-			return !Get().ShouldAbort;
+			return !Get().ShouldAbort || RS_IOManager::ShouldResolve();
 		}
 	}
 
@@ -44,10 +44,14 @@ bool RS_GameInstance::Tick() {
 
 	if (RS_CommandProcesser::ProcessCommand(command, *Get().mapData)) {
 		Get().logger->LogMove(command);
+		if(Get().mapData->EndRoundCheck()){
+			Abort();
+			Get().logger->LogEnd();
+		}
 	}
 	RS_IOManager::ResolveOutput();
 
-	return !Get().ShouldAbort;
+	return !Get().ShouldAbort || RS_IOManager::ShouldResolve();
 }
 
 void RS_GameInstance::Exit() {

@@ -120,8 +120,14 @@ void RS_Logger::Save()
             logFile << PlayerTypeToString(Data.Player) << "\t" << ActionTypeToString(Data.ActionType) << "\t";
             logFile << Data.Data.RawByte[0] << "\t" << Data.Data.RawByte[1] << "\t" << Data.Data.RawByte[2] << "\t" << Data.Data.RawByte[3] << "\n";
             break;
-		default:
+            
+        default:
 			break;
 		}
+    
 	}
+}
+
+void RS_Logger::LogEnd(){
+    logFile << "GameEnd" << std::endl;
 }

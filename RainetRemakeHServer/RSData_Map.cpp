@@ -2,6 +2,9 @@
 
 #include "RS_CommandActionManager.h"
 #include <utility>
+#include "RS_IOManager.h"
+#include "RS_Logger.h"
+
 
 RSData_Piece::RSData_Piece(RSData_Player* player, EPieceType type) :
 	Player(player), Type(type), Slot(nullptr), revealed(false)
@@ -168,7 +171,7 @@ bool RSData_Map::CheckPlayerType(EPlayerType playerType) const
 	if (playerType > EPlayerType::Player2) {
 		return false;
 	}
-	if (gameState == EGameState::End){
+	if (gameState == EGameState::EndGame){
 		return false;
 	}
 	if (gameState == EGameState::WaitingPlayer1 && playerType != Player1) {
@@ -179,4 +182,29 @@ bool RSData_Map::CheckPlayerType(EPlayerType playerType) const
 	}
 
 	return true;
+}
+
+bool RSData_Map::EndRoundCheck(){
+	EPlayerType Winplayer = EPlayerType::Empty;
+	if(playerData[0].AteCount[EPieceType::Link] + playerData[0].EnterCount[EPieceType::Link] >= 4){
+		Winplayer = EPlayerType::Player1;
+	}else if (playerData[1].AteCount[EPieceType::Link] + playerData[1].EnterCount[EPieceType::Link] >= 4){
+		Winplayer = EPlayerType::Player2;
+	}else if(playerData[0].AteCount[EPieceType::Virus] + playerData[0].EnterCount[EPieceType::Virus] >= 4){
+		Winplayer = EPlayerType::Player2;
+	}else if (playerData[1].AteCount[EPieceType::Virus] + playerData[1].EnterCount[EPieceType::Virus] >= 4){
+		Winplayer = EPlayerType::Player1;
+	}
+	if(Winplayer != EPlayerType::Empty){
+		struct WinOut
+		{
+			EPlayerType outPlayer = EPlayerType::Everyone;
+			EActionType Actiontype = EActionType::End;
+			EPlayerType Winplayer;
+		}* out = new WinOut();
+		out->Winplayer = Winplayer;
+		RS_IOManager::QueueOutput((uint8_t*)out, sizeof(WinOut));
+		
+		gameState = EGameState::EndGame;
+	}
 }
