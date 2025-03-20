@@ -206,5 +206,7 @@ bool RSData_Map::EndRoundCheck(){
 		RS_IOManager::QueueOutput((uint8_t*)out, sizeof(WinOut));
 		
 		gameState = EGameState::EndGame;
+		return false;
 	}
+	return true;
 }
