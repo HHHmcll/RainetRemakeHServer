@@ -69,6 +69,18 @@
     <ClInclude Include="CA_SandBox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CA_End.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CA_Error.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CA_FireWall.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CA_VisualEffet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entry.cpp">
@@ -120,6 +132,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CA_SandBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CA_End.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CA_Error.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CA_FireWall.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CA_VisualEffet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

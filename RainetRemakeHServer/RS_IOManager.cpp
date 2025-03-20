@@ -55,7 +55,7 @@ void RS_IOManager::FetchCommand(RSData_Command& command)
         uint32_t numTerminal = command.Data.TerminalSetup;
         auto* terminalData = new std::vector<EActionType>();
         terminalData->reserve(numTerminal);
-        command.Meta = std::shared_ptr<void>((void*)(terminalData));
+        command.Meta = std::shared_ptr<void>(terminalData);
         for (uint32_t i = 0; i < numTerminal; i++) {
             terminalData->push_back(EActionType(std::cin.get()));
         }
