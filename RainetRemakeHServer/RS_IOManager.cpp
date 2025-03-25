@@ -38,26 +38,22 @@ void RS_IOManager::FetchCommand(RSData_Command& command)
     switch (command.ActionType) {
     case EActionType::GetOutput:
     case EActionType::BoardDisplay:
-    case EActionType::Error:
-    
+    case EActionType::Error:    
         break;
-    case EActionType::InitializePieces:
-        command.Data.PieceSetup.setup = std::cin.get();
 
-        break;
     case EActionType::VisualEffet:
-    case EActionType::InitializeTerminal:
+    case EActionType::InitializeBoard:
     {
         for (uint8_t& byte : command.Data.RawByte) {
             byte = std::cin.get();
         }
 
         uint32_t numTerminal = command.Data.TerminalSetup;
-        auto* terminalData = new std::vector<EActionType>();
+        auto* terminalData = new std::vector<uint8_t>();
         terminalData->reserve(numTerminal);
         command.Meta = std::shared_ptr<void>(terminalData);
         for (uint32_t i = 0; i < numTerminal; i++) {
-            terminalData->push_back(EActionType(std::cin.get()));
+            terminalData->push_back(std::cin.get());
         }
         break;
     }

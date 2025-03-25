@@ -22,8 +22,7 @@ enum EActionType : uint8_t {
 	GetOutput,
 	BoardDisplay,
 	
-	InitializeTerminal,
-	InitializePieces,
+	InitializeBoard,
 	VisualEffet,
 	End,
 	Error,

@@ -21,12 +21,10 @@ constexpr const char* ActionTypeToString(const EActionType type){
             return "BoardDisplay";
         case EActionType::Error:
             return "Error";
-        case EActionType::InitializePieces:
-            return "InitializePieces";
         case EActionType::VisualEffet:
             return "VisualEffet";
-        case EActionType::InitializeTerminal:
-            return "InitializeTerminal";
+        case EActionType::InitializeBoard:
+            return "InitializeBoard";
         case EActionType::Move:
             return "Move";
         case EActionType::LineBoost:
@@ -90,24 +88,29 @@ void RS_Logger::Save()
         case EActionType::VisualEffet:
             break;
 
-        case EActionType::InitializePieces:
-
-            logFile << PlayerTypeToString(Data.Player) << "\t" << ActionTypeToString(Data.ActionType);
-            for (int i = 0; i < MAP_SIZE; i++)
-            {
-                logFile << "\t" << PieceTypeToString(EPieceType(Data.Data.PieceSetup.setup & 1 << i));
-            }
-            logFile << "\n";
-            break;
-        case EActionType::InitializeTerminal: 
+        case EActionType::InitializeBoard: 
         {
-            logFile << PlayerTypeToString(Data.Player) << "\t" << ActionTypeToString(Data.ActionType);
-            std::vector<EActionType>* terminals = static_cast<std::vector<EActionType>*>(Data.Meta.get());
-            for (EActionType terminal : *terminals) {
-                logFile << "\t" << ActionTypeToString(terminal);
+            logFile << ActionTypeToString(Data.ActionType);
+            std::vector<uint8_t>& SetupData = *(reinterpret_cast<std::vector<uint8_t>*>(Data.Meta.get()));
+
+            int setupPTR = 0;
+            int CardNum = (Data.Data.TerminalSetup - 16) / 2;
+            for (int p = 0; p < 2;p++) {
+                logFile << PlayerTypeToString(EPlayerType(p));
+
+                for (int i = 0; i < 8; i++, setupPTR++) {
+                    logFile << "\t" << PieceTypeToString(SetupData[setupPTR] == 'L' ? EPieceType::Link : EPieceType::Virus);
+                }
+
+                for (int i = 0; i < CardNum; i++, setupPTR++) {
+                    EActionType termType = EActionType(SetupData[setupPTR]);
+                    logFile << "\t" << ActionTypeToString(termType);
+                }
+                logFile << "\n";
             }
             logFile << "\n";
         }
+
             break;
         case EActionType::Move:
         case EActionType::LineBoost:
