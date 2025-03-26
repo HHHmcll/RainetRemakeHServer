@@ -20,14 +20,12 @@ const RS_CommandAction* GetStaticInitializeBoardConstWrapper() {
 
 bool CA_InitializeBoard::CanDo(const RSData_Command& command, const RSData_Map& map) const
 {
-	if (Initialized[command.Player]) {
-		return false;
-	}
+
 	if (map.GetGameState() != EGameState::Initialization) {
 		return false;
 	}
 
-	if (command.Data.TerminalSetup != map.MaxTerminals * 2 + 8 * 2) {
+	if (command.Data.TerminalSetup != (map.MaxTerminals * 2 + 8 * 2)) {
 		return false;
 	}
 
@@ -53,7 +51,7 @@ bool CA_InitializeBoard::CanDo(const RSData_Command& command, const RSData_Map& 
 
 		bool Took[EActionType::Num - EActionType::Move - 1] = {0};
 
-		for(int i = 0; i < map.MaxTerminals; i++, setupPTR++){
+		for(size_t i = 0; i < map.MaxTerminals; i++, setupPTR++){
 			if(SetupData[setupPTR] >= EActionType::Num  || SetupData[setupPTR] <= EActionType::Move){
 				return false;
 			}
@@ -72,7 +70,8 @@ bool CA_InitializeBoard::Do(RSData_Command& command, RSData_Map& map) const
 
 	std::vector<uint8_t>& SetupData = *((std::vector<uint8_t>*)command.Meta.get());
 	int setupPTR = 0;
-	for (RSData_Player& player : { map.getPlayer(true), map.getPlayer(false) }) {
+	for (bool isPlayer1 : {true, false}) {
+		RSData_Player& player = map.getPlayer(isPlayer1);
 		player.Cards.clear();
 		for (int i = 0; i < 8; i++, setupPTR++) {
 			if (SetupData[setupPTR] == 'L') {
@@ -83,19 +82,16 @@ bool CA_InitializeBoard::Do(RSData_Command& command, RSData_Map& map) const
 			}
 		}
 
-		for (int i = 0; i < map.MaxTerminals; i++, setupPTR++) {
+		for (size_t i = 0; i < map.MaxTerminals; i++, setupPTR++) {
 			EActionType termType = EActionType(SetupData[setupPTR]);
 			player.Cards[termType] = dynamic_cast<const RS_TerminalCard*>(RS_CommandActionManager::GetStaticAction(termType))->CreateNewObject(nullptr);
 		}
 	}
 
-	map.SetGameState(EGameState::WaitingPlayer1);
 
 	return true;
 }
 
-bool CA_InitializeBoard::Initalized() const{
-	return Initialized[0] && Initialized[1];
-}
+
 
 RS_CommandActionCreateFunction createInitializeBoardFunction = RS_CommandActionCreateFunction(EActionType::InitializeBoard, &GetStaticInitializeBoardConstWrapper);

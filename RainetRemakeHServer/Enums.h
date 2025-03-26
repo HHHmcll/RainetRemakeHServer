@@ -7,6 +7,7 @@ enum EPlayerType : uint8_t {
 	Viewer,
 	God,
 	Everyone,
+	EndRoundBroadCast,
 	Empty
 };
 

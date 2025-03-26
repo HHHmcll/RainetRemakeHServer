@@ -3,14 +3,21 @@
 #include <vector>
 #include <iostream>
 
+
 RS_IOManager& RS_IOManager::GetInstance() {
     static RS_IOManager instance = RS_IOManager();
     return instance;
 }
 
 void RS_IOManager::Init() {
+
+    #ifdef _DEBUG
+    freopen("input.bin", "rb", stdin);
+    freopen("output.bin", "wb", stdout);
+    #endif
     GetInstance();
 }
+
 
 void RS_IOManager::WriteData(uint8_t* data, size_t dataSize)
 {

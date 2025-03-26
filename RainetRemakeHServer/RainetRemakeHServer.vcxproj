@@ -22,6 +22,7 @@
     <ClInclude Include="CA_End.h" />
     <ClInclude Include="CA_Error.h" />
     <ClInclude Include="CA_FireWall.h" />
+    <ClInclude Include="CA_InitializeBoard.h" />
     <ClInclude Include="CA_NotFound.h" />
     <ClInclude Include="CA_RabbitTrap.h" />
     <ClInclude Include="CA_SandBox.h" />
@@ -30,8 +31,6 @@
     <ClInclude Include="CA_ZeroDayAttack.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="CA_GetOutput.h" />
-    <ClInclude Include="CA_InitializePieces.h" />
-    <ClInclude Include="CA_InitializeTerminal.h" />
     <ClInclude Include="CA_LineBoost.h" />
     <ClInclude Include="CA_Move.h" />
     <ClInclude Include="RSData_Command.h" />
@@ -46,6 +45,7 @@
     <ClCompile Include="CA_End.cpp" />
     <ClCompile Include="CA_Error.cpp" />
     <ClCompile Include="CA_FireWall.cpp" />
+    <ClCompile Include="CA_InitializeBoard.cpp" />
     <ClCompile Include="CA_NotFound.cpp" />
     <ClCompile Include="CA_RabbitTrap.cpp" />
     <ClCompile Include="CA_SandBox.cpp" />
@@ -54,8 +54,6 @@
     <ClCompile Include="CA_ZeroDayAttack.cpp" />
     <ClCompile Include="Entry.cpp" />
     <ClCompile Include="CA_GetOutput.cpp" />
-    <ClCompile Include="CA_InitializePieces.cpp" />
-    <ClCompile Include="CA_InitializeTerminal.cpp" />
     <ClCompile Include="CA_LineBoost.cpp" />
     <ClCompile Include="CA_Move.cpp" />
     <ClCompile Include="RSData_Map.cpp" />
@@ -64,6 +62,10 @@
     <ClCompile Include="RS_GameInstance.cpp" />
     <ClCompile Include="RS_IOManager.cpp" />
     <ClCompile Include="RS_Logger.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Input.bin" />
+    <None Include="output.bin" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -76,26 +78,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -163,7 +165,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>

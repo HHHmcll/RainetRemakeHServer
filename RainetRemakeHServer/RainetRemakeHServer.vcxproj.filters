@@ -18,12 +18,6 @@
     <ClInclude Include="Enums.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CA_InitializePieces.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CA_InitializeTerminal.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CA_LineBoost.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -81,15 +75,12 @@
     <ClInclude Include="CA_VisualEffet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CA_InitializeBoard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entry.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CA_InitializePieces.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CA_InitializeTerminal.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CA_LineBoost.cpp">
@@ -146,5 +137,16 @@
     <ClCompile Include="CA_VisualEffet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CA_InitializeBoard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Input.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="output.bin">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

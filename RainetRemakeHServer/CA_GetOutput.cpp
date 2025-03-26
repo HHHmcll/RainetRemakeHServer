@@ -14,7 +14,7 @@ bool CA_GetOutput::CanDo(const RSData_Command& command, const RSData_Map& map) c
 bool CA_GetOutput::Do(RSData_Command& command, RSData_Map& map) const
 {
 	RS_IOManager::Unhold();
-	return true;
+	return false;
 }
 
 

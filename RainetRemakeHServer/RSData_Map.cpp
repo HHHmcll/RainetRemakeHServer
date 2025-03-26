@@ -123,6 +123,9 @@ EPlayerType RSData_Map::IsTerminal(const EActionType terminal, const RSData_Slot
 {
 	for (const RSData_Player& player : playerData)
 	{
+		if (!player.Cards.contains(terminal)) {
+			continue;
+		}
 		if(auto& terminalCard = player.Cards.at(terminal)){
 			if(terminalCard->Is(slot)){
 				return EPlayerType(player.PlayerID);
@@ -184,7 +187,17 @@ bool RSData_Map::CheckPlayerType(EPlayerType playerType) const
 	return true;
 }
 
+
+
 bool RSData_Map::EndRoundCheck(){
+
+	if (gameState == EGameState::WaitingPlayer1) {
+		gameState = EGameState::WaitingPlayer2;
+	}
+	else {
+		gameState = EGameState::WaitingPlayer1;
+	}
+
 	EPlayerType Winplayer = EPlayerType::Empty;
 	if(playerData[0].AteCount[EPieceType::Link] + playerData[0].EnterCount[EPieceType::Link] >= 4){
 		Winplayer = EPlayerType::Player1;
@@ -206,7 +219,7 @@ bool RSData_Map::EndRoundCheck(){
 		RS_IOManager::QueueOutput((uint8_t*)out, sizeof(WinOut));
 		
 		gameState = EGameState::EndGame;
-		return false;
+		return true;
 	}
-	return true;
+	return false;
 }
