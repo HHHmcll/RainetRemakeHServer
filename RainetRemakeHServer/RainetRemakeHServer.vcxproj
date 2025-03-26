@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CA_BoardDisplay.h" />
     <ClInclude Include="CA_End.h" />
     <ClInclude Include="CA_Error.h" />
     <ClInclude Include="CA_FireWall.h" />
@@ -42,6 +43,7 @@
     <ClInclude Include="RS_Logger.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CA_BoardDisplay.cpp" />
     <ClCompile Include="CA_End.cpp" />
     <ClCompile Include="CA_Error.cpp" />
     <ClCompile Include="CA_FireWall.cpp" />

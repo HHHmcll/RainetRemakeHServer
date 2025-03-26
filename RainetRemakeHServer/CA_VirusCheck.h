@@ -15,5 +15,6 @@ public:
 	bool CanDo(const RSData_Command& command, const RSData_Map& map) const override;
 	bool Do(RSData_Command& command, RSData_Map& map) const override;
 	bool Is(const RSData_Slot* slot) const override;
+	void WriteToBuffer(const bool ShouldHide, std::vector<uint32_t>& buffer) const override;
 };
 

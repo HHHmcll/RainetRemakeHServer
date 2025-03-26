@@ -160,7 +160,7 @@ bool RSData_Map::GetCoordFromSlot(RSData_Slot* slot, uint8_t& row, uint8_t& col)
 	if(!slot->bOnBoard){
 		return false;
 	}
-	int id = slot->SlotID;
+	size_t id = slot->SlotID;
 
 	if (id < 0 || id >= MAP_SIZE * MAP_SIZE) return false;
 	row = id / MAP_SIZE;

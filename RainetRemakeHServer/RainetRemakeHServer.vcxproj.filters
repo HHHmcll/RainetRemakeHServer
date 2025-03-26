@@ -78,6 +78,9 @@
     <ClInclude Include="CA_InitializeBoard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CA_BoardDisplay.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entry.cpp">
@@ -138,6 +141,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CA_InitializeBoard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CA_BoardDisplay.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

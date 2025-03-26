@@ -8,11 +8,6 @@ struct RSData_Command;
 struct RSData_Player;
 struct RSData_Slot;
 
-enum class EBlock_Status {
-	Pass,	// Action Accepted by a Block Check
-	Block,	// Action Rejected by a Block Check
-	Ignored	// Action is not Related To this Block Check
-};
 
 class RS_CommandAction {
 public:
@@ -35,6 +30,8 @@ public:
 	virtual std::shared_ptr<RS_TerminalCard> CreateNewObject(void* meta) const = 0;
 	//Return true if this slot is eligible for this CommandAction
 	virtual bool Is(const RSData_Slot* slot) const = 0;
+
+	virtual void WriteToBuffer(const bool ShouldHide, std::vector<uint32_t>& buffer) const = 0;
 };
 
 typedef const RS_CommandAction* (*CreateActionFunction)(void) ;
