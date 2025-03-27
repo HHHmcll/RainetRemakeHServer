@@ -77,11 +77,11 @@ void CA_FireWall::WriteToBuffer(const bool ShouldHide, std::vector<uint8_t>& buf
 	buffer.push_back(EActionType::FireWall);
 	buffer.push_back(Owner->PlayerID);
 	if (TrappedSlot == nullptr) {
-		buffer.push_back(0xAA);
 		buffer.push_back(0);
+		buffer.push_back(0xFF);
 	}
 	else {
-		buffer.push_back(0);
+		buffer.push_back(0xAA);
 		buffer.push_back(map.GetCoordFromSlot(TrappedSlot));
 	}
 }

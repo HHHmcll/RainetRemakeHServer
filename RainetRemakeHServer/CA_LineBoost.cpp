@@ -79,11 +79,11 @@ void CA_LineBoost::WriteToBuffer(const bool ShouldHide, std::vector<uint8_t>& bu
 	buffer.push_back(EActionType::LineBoost);
 	buffer.push_back(Owner->PlayerID);
 	if (InstalledPiece == nullptr) {
-		buffer.push_back(0xAA);
-		buffer.push_back(0);
+		buffer.push_back(0x00);
+		buffer.push_back(0xFF);
 	}
 	else {
-		buffer.push_back(0);
+		buffer.push_back(0xAA);
 		buffer.push_back(map.GetCoordFromSlot(InstalledPiece->Slot));
 	}
 }

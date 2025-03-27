@@ -52,3 +52,60 @@ enum EActionType
 
 第一位为 EPlayerType
 数据需要完整（包括第一位）发送给对应Type的客户端
+
+## 获取棋盘
+
+- 1 char Player
+- 1 char BoardDisplay
+- 1 char num of Commands
+
+- 4 char * n commands
+  - commands are shuffled to prevent 
+### for each command 
+- 1 char type 
+- 1 char player ID Owner
+  - 0 - 2 piece type
+  - 7 - 13 action type
+- 2 char meta
+- #### meta
+  - #### Piece
+    - char 1 :
+      - On board = 0xAA
+      - Off board = 0x00
+    - char 2:
+      - Invalid : 0xFF
+      - OffBoard : 0xAP P = playerID
+      - OnBoard : 0xXY, X = row, Y = col
+  - #### FireWall
+    - char 1: 
+      - On Board : 0xAA
+      - Not On Board : 0x00
+    - char 2:
+      - Not Valid : 0xFF
+      - On Board Slot : 0xXY, X = row, Y = col
+  - #### LineBoost
+    - char 1: 
+      - On Board : 0xAA
+      - Not On Board : 0x00
+    - char 2:
+      - On Board Slot : 0xXY, X = row, Y = col
+      - Not Valid : 0xFF
+  - #### NotFound
+    - Used: 0xAAAA
+    - NotUsed: 0x0000
+  - #### SandBox
+    - Used:
+      - char 1 : 0xAA
+      - char 2 : Slot, 0xXY, X = row, Y = col
+    - NotUsed: 0x0000
+  - #### RabbitTrap
+    - Used:
+      - char 1 :
+        - Is Real/ Not revealed 0xAA 
+        - Is Fake 0xA0
+      - char 2 : Slot, 0xXY, X = row, Y = col
+    - NotUsed: 0x0000
+  - #### ZeroDayAttack
+    - Used: 0xAAAA
+    - NotUsed: 0x0000
+  - 

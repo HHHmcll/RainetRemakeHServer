@@ -32,15 +32,14 @@ bool CA_BoardDisplay::Do(RSData_Command& command, RSData_Map& map) const
 	map.ForEachPlayer([&](RSData_Player* player) -> bool {
 		const bool show = player->PlayerID == command.Player || command.Player == EPlayerType::Everyone;
 		for (const RSData_Piece& piece : player->pieces) {
-			data.push_back(uint8_t(piece.Player->PlayerID));
 			if (show || piece.revealed) {
 				data.push_back(uint8_t(piece.Type));
 			}
 			else {
 				data.push_back(uint8_t(EPieceType::Unknown));
 			}
-
-			data.push_back(uint8_t(piece.Slot->bOnBoard));
+			data.push_back(uint8_t(piece.Player->PlayerID));
+			data.push_back(uint8_t(piece.Slot->bOnBoard) & 0xAA);
 			data.push_back(map.GetCoordFromSlot(piece.Slot));
 		}
 		player->ForEachTerminal([&](RS_TerminalCard* terminal) -> bool {

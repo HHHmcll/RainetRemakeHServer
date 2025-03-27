@@ -91,7 +91,7 @@ bool CA_ZeroDayAttack::Is(const RSData_Slot* slot) const
 
 void CA_ZeroDayAttack::WriteToBuffer(const bool ShouldHide, std::vector<uint8_t>& buffer, const RSData_Map& map) const
 {
-	buffer.push_back(EActionType::SandBox);
+	buffer.push_back(EActionType::ZeroDayAttack);
 	buffer.push_back(Owner->PlayerID);
 	if (used) {
 		buffer.push_back(0xAA);

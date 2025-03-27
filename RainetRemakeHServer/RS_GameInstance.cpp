@@ -48,7 +48,7 @@ bool RS_GameInstance::Tick() {
 		data[0] = EPlayerType::EndRoundBroadCast;
 		data[1] = command.Player;
 		data[2] = command.ActionType;
-		RS_IOManager::QueueOutput(data,2);
+		RS_IOManager::QueueOutput(data,3);
 		if(Get().mapData->EndRoundCheck()){
 			Abort();
 			Get().logger->LogEnd();
