@@ -3,11 +3,15 @@
 #include "RSData_Map.h"
 #include "RSData_Command.h"
 
-CA_NotFound::CA_NotFound():used(false) {}
+CA_NotFound::CA_NotFound() :
+	used(false), Owner(nullptr) {}
 
-std::shared_ptr<RS_TerminalCard> CA_NotFound::CreateNewObject(void* meta) const
+CA_NotFound::CA_NotFound(RSData_Player* owner) :
+	used(false), Owner(owner) {}
+
+std::shared_ptr<RS_TerminalCard> CA_NotFound::CreateNewObject(RSData_Player* owner) const
 {
-	return std::shared_ptr<RS_TerminalCard>(new CA_NotFound());
+	return std::shared_ptr<RS_TerminalCard>(new CA_NotFound(owner));
 }
 
 
@@ -80,6 +84,20 @@ bool CA_NotFound::Do(RSData_Command& command, RSData_Map& map) const
 bool CA_NotFound::Is(const RSData_Slot* slot) const
 {
 	return false;
+}
+
+void CA_NotFound::WriteToBuffer(const bool ShouldHide, std::vector<uint8_t>& buffer, const RSData_Map& map) const
+{
+	buffer.push_back(EActionType::NotFound);
+	buffer.push_back(Owner->PlayerID);
+	if (used) {
+		buffer.push_back(0xAA);
+		buffer.push_back(0xAA);
+	}
+	else {
+		buffer.push_back(0);
+		buffer.push_back(0);
+	}
 }
 
 const RS_CommandAction* GetStaticNotFound() {

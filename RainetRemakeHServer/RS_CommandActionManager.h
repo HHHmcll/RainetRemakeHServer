@@ -27,11 +27,11 @@ public:
 class RS_TerminalCard : public RS_CommandAction{
 public:
 	// Create a object of self
-	virtual std::shared_ptr<RS_TerminalCard> CreateNewObject(void* meta) const = 0;
+	virtual std::shared_ptr<RS_TerminalCard> CreateNewObject(RSData_Player* owner) const = 0;
 	//Return true if this slot is eligible for this CommandAction
 	virtual bool Is(const RSData_Slot* slot) const = 0;
 
-	virtual void WriteToBuffer(const bool ShouldHide, std::vector<uint32_t>& buffer) const = 0;
+	virtual void WriteToBuffer(const bool ShouldHide, std::vector<uint8_t>& buffer,const RSData_Map& map) const = 0;
 };
 
 typedef const RS_CommandAction* (*CreateActionFunction)(void) ;

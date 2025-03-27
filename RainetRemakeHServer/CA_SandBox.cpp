@@ -3,12 +3,17 @@
 #include "RSData_Map.h"
 #include "RSData_Command.h"
 
-CA_SandBox::CA_SandBox():TrappedPiece(nullptr), used(false){}
+CA_SandBox::CA_SandBox() :
+	used(false), Owner(nullptr) {}
 
-std::shared_ptr<RS_TerminalCard> CA_SandBox::CreateNewObject(void* meta) const
+CA_SandBox::CA_SandBox(RSData_Player* owner) :
+	used(false), Owner(owner) {}
+
+std::shared_ptr<RS_TerminalCard> CA_SandBox::CreateNewObject(RSData_Player* owner) const
 {
-	return std::shared_ptr<RS_TerminalCard>(new CA_SandBox());
+	return std::shared_ptr<RS_TerminalCard>(new CA_SandBox(owner));
 }
+
 
 
 bool CA_SandBox::CanDo(const RSData_Command& command, const RSData_Map& map) const
@@ -57,11 +62,25 @@ bool CA_SandBox::Do(RSData_Command& command, RSData_Map& map) const
 
 }
 
-
 bool CA_SandBox::Is(const RSData_Slot* slot) const
 {
 	return false;
 }
+
+void CA_SandBox::WriteToBuffer(const bool ShouldHide, std::vector<uint8_t>& buffer, const RSData_Map& map) const
+{
+	buffer.push_back(EActionType::SandBox);
+	buffer.push_back(Owner->PlayerID);
+	if (used) {
+		buffer.push_back(0xAA);
+		buffer.push_back(map.GetCoordFromSlot(TrappedPiece->Slot));
+	}
+	else {
+		buffer.push_back(0);
+		buffer.push_back(0);
+	}
+}
+
 
 const RS_CommandAction* GetStaticSandBox() {
 	static CA_SandBox SandBoxStatic = CA_SandBox();

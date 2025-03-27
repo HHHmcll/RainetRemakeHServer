@@ -6,15 +6,17 @@ struct RSData_Piece;
 class CA_VirusCheck :public RS_TerminalCard {
 private:
 	CA_VirusCheck();
+	CA_VirusCheck(RSData_Player* owner);
+	const RSData_Player* Owner;
 	friend const RS_CommandAction* GetStaticVirusCheck();
 	bool used;
 
 public:
 	static const EActionType StaticType = EActionType::VirusCheck;
-	std::shared_ptr<RS_TerminalCard> CreateNewObject(void* meta) const override;
+	std::shared_ptr<RS_TerminalCard> CreateNewObject(RSData_Player* owner) const override;
 	bool CanDo(const RSData_Command& command, const RSData_Map& map) const override;
 	bool Do(RSData_Command& command, RSData_Map& map) const override;
 	bool Is(const RSData_Slot* slot) const override;
-	void WriteToBuffer(const bool ShouldHide, std::vector<uint32_t>& buffer) const override;
+	void WriteToBuffer(const bool ShouldHide, std::vector<uint8_t>& buffer, const RSData_Map& map) const;
 };
 

@@ -121,46 +121,9 @@ bool CA_Move::Do(RSData_Command& command, RSData_Map& map) const
 	RSData_Slot* commandSlotFrom = map.getPieceSlot(Coordinate.row1, Coordinate.col1);
 	RSData_Slot* commandSlotTo = map.getPieceSlot(Coordinate.row2, Coordinate.col2);
 
+	map.PerformMove(playerRef, command, commandSlotFrom, commandSlotTo);
 
-	if(commandSlotTo->bOnBoard){
 
-		EPlayerType RabbitPlayer = map.IsTerminal(EActionType::RabbitTrap,commandSlotTo);
-		if (RabbitPlayer != EPlayerType::Empty) {
-			auto * RabbitTrap = map.getPlayer(RabbitPlayer == EPlayerType::Player1).GetTerminal<CA_RabbitTrap>();
-			RabbitTrap->TrappedSlot = nullptr;
-			
-			commandSlotFrom->Piece->revealed = true;
-			EPlayerType SandBoxPlayer = map.IsTerminal(EActionType::SandBox, commandSlotFrom);
-			if (SandBoxPlayer != EPlayerType::Empty) {
-				auto* sandBox = map.getPlayer(SandBoxPlayer == EPlayerType::Player1).GetTerminal<CA_SandBox>();
-				sandBox->TrappedPiece = nullptr;
-			}
-			
-		}
-		
-		if(commandSlotTo->Piece){
-			playerRef.AteCount[commandSlotTo->Piece->Type] ++;
-			playerRef.CaptureSlot[commandSlotTo->Piece->Type].push_back(commandSlotTo->Piece);
-			commandSlotTo->Piece->OnPieceRemovedFromBoard.BroadCast(command);
-			commandSlotTo->Piece->revealed = true;
-			commandSlotTo->Piece->Slot = nullptr;
-			commandSlotTo->Piece = nullptr;
-		}
-		
-		commandSlotTo->Piece = commandSlotFrom->Piece;
-		commandSlotTo->Piece->Slot = commandSlotTo;
-		commandSlotFrom->Piece = nullptr;
-
-	}else{
-		auto& playerBeEntered = map.getPlayer(commandSlotTo->SlotID == EPlayerType::Player1);
-		playerRef.EnterCount[commandSlotFrom->Piece->Type] ++;
-		playerBeEntered.ServerSlots.push_back(commandSlotFrom->Piece);
-
-		commandSlotFrom->Piece->OnPieceRemovedFromBoard.BroadCast(command);
-		
-		commandSlotFrom->Piece->Slot = nullptr;
-		commandSlotFrom->Piece = nullptr;
-	}
     return true;
 }
 

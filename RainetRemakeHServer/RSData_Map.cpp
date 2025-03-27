@@ -4,6 +4,8 @@
 #include <utility>
 #include "RS_IOManager.h"
 #include "RS_Logger.h"
+#include "CA_SandBox.h"
+#include "CA_RabbitTrap.h"
 
 
 RSData_Piece::RSData_Piece(RSData_Player* player, EPieceType type) :
@@ -155,17 +157,21 @@ void RSData_Map::SetGameState(EGameState newState){
 	gameState = newState;
 }
 
-bool RSData_Map::GetCoordFromSlot(RSData_Slot* slot, uint8_t& row, uint8_t& col)
+uint8_t RSData_Map::GetCoordFromSlot(RSData_Slot* slot) const
 {
+	if (!slot) {
+		return 0xFF;
+	}
 	if(!slot->bOnBoard){
-		return false;
+		return  0xA0 | uint8_t(slot->SlotID);
 	}
 	size_t id = slot->SlotID;
+	
+	if (id < 0 || id >= MAP_SIZE * MAP_SIZE) return 0xFF;
+	uint8_t row = id / MAP_SIZE;
+	uint8_t col = id % MAP_SIZE;
 
-	if (id < 0 || id >= MAP_SIZE * MAP_SIZE) return false;
-	row = id / MAP_SIZE;
-	col = id % MAP_SIZE;
-	return true;
+	return  (row << 4) | col;
 }
 
 bool RSData_Map::CheckPlayerType(EPlayerType playerType) const
@@ -222,4 +228,53 @@ bool RSData_Map::EndRoundCheck(){
 		return true;
 	}
 	return false;
+}
+
+
+void RSData_Map::PerformMove(RSData_Player& playerRef, RSData_Command& command, RSData_Slot* commandSlotFrom, RSData_Slot* commandSlotTo) {
+
+	if (commandSlotFrom == commandSlotTo) {
+		return;
+	}
+
+	MapPreMoveDelegate.BroadCast(command);
+	if (commandSlotTo->bOnBoard) {
+
+		EPlayerType RabbitPlayer = IsTerminal(EActionType::RabbitTrap, commandSlotTo);
+		if (RabbitPlayer != EPlayerType::Empty) {
+			auto* RabbitTrap = getPlayer(RabbitPlayer == EPlayerType::Player1).GetTerminal<CA_RabbitTrap>();
+			RabbitTrap->TrappedSlot = nullptr;
+
+			commandSlotFrom->Piece->revealed = true;
+			EPlayerType SandBoxPlayer = IsTerminal(EActionType::SandBox, commandSlotFrom);
+			if (SandBoxPlayer != EPlayerType::Empty) {
+				auto* sandBox = getPlayer(SandBoxPlayer == EPlayerType::Player1).GetTerminal<CA_SandBox>();
+				sandBox->TrappedPiece = nullptr;
+			}
+		}
+
+		if (commandSlotTo->Piece) {
+			playerRef.AteCount[commandSlotTo->Piece->Type] ++;
+			playerRef.CaptureSlot[commandSlotTo->Piece->Type].push_back(commandSlotTo->Piece);
+			commandSlotTo->Piece->OnPieceRemovedFromBoard.BroadCast(command);
+			commandSlotTo->Piece->revealed = true;
+			commandSlotTo->Piece->Slot = nullptr;
+			commandSlotTo->Piece = nullptr;
+		}
+
+		commandSlotTo->Piece = commandSlotFrom->Piece;
+		commandSlotTo->Piece->Slot = commandSlotTo;
+		commandSlotFrom->Piece = nullptr;
+
+	}
+	else {
+		auto& playerBeEntered = getPlayer(commandSlotTo->SlotID == EPlayerType::Player1);
+		playerRef.EnterCount[commandSlotFrom->Piece->Type] ++;
+		playerBeEntered.ServerSlots.push_back(commandSlotFrom->Piece);
+
+		commandSlotFrom->Piece->OnPieceRemovedFromBoard.BroadCast(command);
+
+		commandSlotFrom->Piece->Slot = nullptr;
+		commandSlotFrom->Piece = nullptr;
+	}
 }

@@ -4,11 +4,14 @@
 #include "RSData_Command.h"
 
 CA_VirusCheck::CA_VirusCheck() :
-	used(false){}
+	used(false), Owner(nullptr) {}
 
-std::shared_ptr<RS_TerminalCard> CA_VirusCheck::CreateNewObject(void* meta) const
+CA_VirusCheck::CA_VirusCheck(RSData_Player* owner) :
+	used(false),Owner(owner) {}
+
+std::shared_ptr<RS_TerminalCard> CA_VirusCheck::CreateNewObject(RSData_Player* owner) const
 {
-	return std::shared_ptr<RS_TerminalCard>(new CA_VirusCheck());
+	return std::shared_ptr<RS_TerminalCard>(new CA_VirusCheck(owner));
 }
 
 
@@ -52,12 +55,25 @@ bool CA_VirusCheck::Do(RSData_Command& command, RSData_Map& map) const
 	return true;
 
 }
-
-
 bool CA_VirusCheck::Is(const RSData_Slot* slot) const
 {
 	return false;
 }
+
+void CA_VirusCheck::WriteToBuffer(const bool ShouldHide, std::vector<uint8_t>& buffer, const RSData_Map& map) const
+{
+	buffer.push_back(EActionType::VirusCheck);
+	buffer.push_back(Owner->PlayerID);
+	if (used) {
+		buffer.push_back(0xAA);
+		buffer.push_back(0xAA);
+	}
+	else {
+		buffer.push_back(0);
+		buffer.push_back(0);
+	}
+}
+
 
 const RS_CommandAction* GetStaticVirusCheck() {
 	static CA_VirusCheck VirusCheckStatic = CA_VirusCheck();

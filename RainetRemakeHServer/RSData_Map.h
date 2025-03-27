@@ -98,7 +98,7 @@ private:
     }
 
 public:
-
+    RS_Delegate MapPreMoveDelegate;
     const uint32_t MaxTerminals;
     RSData_Map(uint32_t maxTerminals);
     const EGameState GetGameState() const;
@@ -114,10 +114,15 @@ public:
     // will return true and stop following iterations if callback return true
     // return false otherwise
     bool ForEachPlayer(std::function<bool(RSData_Player*)> callback);
-    bool GetCoordFromSlot(RSData_Slot* slot, uint8_t& row, uint8_t& col);
+    // coord : high : A offboard, low : playerID
+    // high: row, low: col
+    uint8_t GetCoordFromSlot(RSData_Slot* slot) const;
+
     bool CheckPlayerType(EPlayerType playerType) const;
     // Game End if true;
     bool EndRoundCheck();
+
+    void PerformMove(RSData_Player& playerRef, RSData_Command& command, RSData_Slot* commandSlotFrom, RSData_Slot* commandSlotTo);
 };
 
 template<typename TerminalClass>

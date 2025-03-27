@@ -5,14 +5,16 @@
 #include "RSData_Command.h"
 #include "CA_SandBox.h"
 
-CA_ZeroDayAttack::CA_ZeroDayAttack():used(false) {}
+CA_ZeroDayAttack::CA_ZeroDayAttack() :
+	used(false), Owner(nullptr) {}
 
-std::shared_ptr<RS_TerminalCard> CA_ZeroDayAttack::CreateNewObject(void* meta) const
+CA_ZeroDayAttack::CA_ZeroDayAttack(RSData_Player* owner) :
+	used(false), Owner(owner) {}
+
+std::shared_ptr<RS_TerminalCard> CA_ZeroDayAttack::CreateNewObject(RSData_Player* owner) const
 {
-	return std::shared_ptr<RS_TerminalCard>(new CA_ZeroDayAttack());
+	return std::shared_ptr<RS_TerminalCard>(new CA_ZeroDayAttack(owner));
 }
-
-
 
 bool CA_ZeroDayAttack::CanDo(const RSData_Command& command, const RSData_Map& map) const
 {
@@ -76,49 +78,8 @@ bool CA_ZeroDayAttack::Do(RSData_Command& command, RSData_Map& map) const
 	RSData_Slot* commandSlotFrom = map.getPieceSlot(command.Data.Coordinate.row1, command.Data.Coordinate.col1);
 	RSData_Slot* commandSlotTo = map.getPieceSlot(command.Data.Coordinate.row2, command.Data.Coordinate.col2);
 
-	if (commandSlotFrom == commandSlotTo) {
-		return true;
-	}
-	
-	if(commandSlotTo->bOnBoard){
-		
-		EPlayerType RabbitPlayer = map.IsTerminal(EActionType::RabbitTrap,commandSlotTo);
-		if (RabbitPlayer != EPlayerType::Empty) {
-			auto * RabbitTrap = map.getPlayer(RabbitPlayer == EPlayerType::Player1).GetTerminal<CA_RabbitTrap>();
-			RabbitTrap->TrappedSlot = nullptr;
-			
-			commandSlotFrom->Piece->revealed = true;
-			EPlayerType SandBoxPlayer = map.IsTerminal(EActionType::SandBox, commandSlotFrom);
-			if (SandBoxPlayer != EPlayerType::Empty) {
-				auto* sandBox = map.getPlayer(SandBoxPlayer == EPlayerType::Player1).GetTerminal<CA_SandBox>();
-				sandBox->TrappedPiece = nullptr;
-			}
-			
-		}
-		
-		if(commandSlotTo->Piece){
-			playerRef.AteCount[commandSlotTo->Piece->Type] ++;
-			playerRef.CaptureSlot[commandSlotTo->Piece->Type].push_back(commandSlotTo->Piece);
-			commandSlotTo->Piece->OnPieceRemovedFromBoard.BroadCast(command);
-			commandSlotTo->Piece->revealed = true;
-			commandSlotTo->Piece->Slot = nullptr;
-			commandSlotTo->Piece = nullptr;
-		}
-		
-		commandSlotTo->Piece = commandSlotFrom->Piece;
-		commandSlotTo->Piece->Slot = commandSlotTo;
-		commandSlotFrom->Piece = nullptr;
+	map.PerformMove(playerRef, command, commandSlotFrom, commandSlotTo);
 
-	}else{
-		auto& playerBeEntered = map.getPlayer(commandSlotTo->SlotID == EPlayerType::Player1);
-		playerRef.EnterCount[commandSlotFrom->Piece->Type] ++;
-		playerBeEntered.ServerSlots.push_back(commandSlotFrom->Piece);
-
-		commandSlotFrom->Piece->OnPieceRemovedFromBoard.BroadCast(command);
-		
-		commandSlotFrom->Piece->Slot = nullptr;
-		commandSlotFrom->Piece = nullptr;
-	}
 	return true;
 }
 
@@ -126,6 +87,20 @@ bool CA_ZeroDayAttack::Do(RSData_Command& command, RSData_Map& map) const
 bool CA_ZeroDayAttack::Is(const RSData_Slot* slot) const
 {
 	return false;
+}
+
+void CA_ZeroDayAttack::WriteToBuffer(const bool ShouldHide, std::vector<uint8_t>& buffer, const RSData_Map& map) const
+{
+	buffer.push_back(EActionType::SandBox);
+	buffer.push_back(Owner->PlayerID);
+	if (used) {
+		buffer.push_back(0xAA);
+		buffer.push_back(0xAA);
+	}
+	else {
+		buffer.push_back(0);
+		buffer.push_back(0);
+	}
 }
 
 const RS_CommandAction* GetStaticZeroDayAttack() {

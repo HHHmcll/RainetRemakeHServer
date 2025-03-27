@@ -44,9 +44,11 @@ bool RS_GameInstance::Tick() {
 
 	if (RS_CommandProcesser::ProcessCommand(command, *Get().mapData)) {
 		Get().logger->LogMove(command);
-		uint8_t* data = new uint8_t();
-		*data = EPlayerType::EndRoundBroadCast;
-		RS_IOManager::QueueOutput(data,1);
+		uint8_t* data = new uint8_t[3];
+		data[0] = EPlayerType::EndRoundBroadCast;
+		data[1] = command.Player;
+		data[2] = command.ActionType;
+		RS_IOManager::QueueOutput(data,2);
 		if(Get().mapData->EndRoundCheck()){
 			Abort();
 			Get().logger->LogEnd();

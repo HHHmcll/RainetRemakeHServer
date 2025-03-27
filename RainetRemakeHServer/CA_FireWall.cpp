@@ -3,13 +3,16 @@
 #include "RSData_Map.h"
 #include "RSData_Command.h"
 
-CA_FireWall::CA_FireWall():TrappedSlot(nullptr){}
+CA_FireWall::CA_FireWall() :
+	Owner(nullptr) {}
 
-std::shared_ptr<RS_TerminalCard> CA_FireWall::CreateNewObject(void* meta) const
+CA_FireWall::CA_FireWall(RSData_Player* owner) :
+	Owner(owner) {}
+
+std::shared_ptr<RS_TerminalCard> CA_FireWall::CreateNewObject(RSData_Player* owner) const
 {
-	return std::shared_ptr<RS_TerminalCard>(new CA_FireWall());
+	return std::shared_ptr<RS_TerminalCard>(new CA_FireWall(owner));
 }
-
 
 bool CA_FireWall::CanDo(const RSData_Command& command, const RSData_Map& map) const
 {
@@ -67,6 +70,20 @@ bool CA_FireWall::Do(RSData_Command& command, RSData_Map& map) const
 bool CA_FireWall::Is(const RSData_Slot* slot) const
 {
 	return slot == TrappedSlot;
+}
+
+void CA_FireWall::WriteToBuffer(const bool ShouldHide, std::vector<uint8_t>& buffer, const RSData_Map& map) const
+{
+	buffer.push_back(EActionType::FireWall);
+	buffer.push_back(Owner->PlayerID);
+	if (TrappedSlot == nullptr) {
+		buffer.push_back(0xAA);
+		buffer.push_back(0);
+	}
+	else {
+		buffer.push_back(0);
+		buffer.push_back(map.GetCoordFromSlot(TrappedSlot));
+	}
 }
 
 const RS_CommandAction* GetStaticFireWall() {

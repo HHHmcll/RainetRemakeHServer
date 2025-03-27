@@ -84,7 +84,7 @@ bool CA_InitializeBoard::Do(RSData_Command& command, RSData_Map& map) const
 
 		for (size_t i = 0; i < map.MaxTerminals; i++, setupPTR++) {
 			EActionType termType = EActionType(SetupData[setupPTR]);
-			player.Cards[termType] = dynamic_cast<const RS_TerminalCard*>(RS_CommandActionManager::GetStaticAction(termType))->CreateNewObject(nullptr);
+			player.Cards[termType] = dynamic_cast<const RS_TerminalCard*>(RS_CommandActionManager::GetStaticAction(termType))->CreateNewObject(&player);
 		}
 	}
 

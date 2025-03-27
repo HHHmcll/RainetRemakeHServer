@@ -4,13 +4,15 @@
 #include "RSData_Command.h"
 
 CA_LineBoost::CA_LineBoost() :
-	InstalledPiece(nullptr) {}
+	Owner(nullptr) {}
 
-std::shared_ptr<RS_TerminalCard> CA_LineBoost::CreateNewObject(void* meta) const
+CA_LineBoost::CA_LineBoost(RSData_Player* owner) :
+	Owner(owner) {}
+
+std::shared_ptr<RS_TerminalCard> CA_LineBoost::CreateNewObject(RSData_Player* owner) const
 {
-	return std::shared_ptr<RS_TerminalCard>(new CA_LineBoost());
+	return std::shared_ptr<RS_TerminalCard>(new CA_LineBoost(owner));
 }
-
 
 bool CA_LineBoost::CanDo(const RSData_Command& command, const RSData_Map& map) const
 {
@@ -70,6 +72,20 @@ bool CA_LineBoost::Do(RSData_Command& command, RSData_Map& map) const
 bool CA_LineBoost::Is(const RSData_Slot* slot) const
 {
 	return slot && InstalledPiece && slot->Piece == InstalledPiece;
+}
+
+void CA_LineBoost::WriteToBuffer(const bool ShouldHide, std::vector<uint8_t>& buffer, const RSData_Map& map) const
+{
+	buffer.push_back(EActionType::LineBoost);
+	buffer.push_back(Owner->PlayerID);
+	if (InstalledPiece == nullptr) {
+		buffer.push_back(0xAA);
+		buffer.push_back(0);
+	}
+	else {
+		buffer.push_back(0);
+		buffer.push_back(map.GetCoordFromSlot(InstalledPiece->Slot));
+	}
 }
 
 const RS_CommandAction* GetStaticLineBoost() {
